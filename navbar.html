@@ -7,6 +7,9 @@
             <li><a href="/cs487/vehicles.php">Vehicles</a></li>
             <li><a href="/cs487/parts.php">Parts</a></li>
             <li><a href="/cs487/sales.php">Sales</a></li>
+            <?php if(is_manager()) { ?>
+            <li><a href="/cs487/employees.php">Employees</a></li>
+            <?php } ?>
             <li><a href="/cs487/admin.php">Admin</a></li>
           </ul>
         </div>
