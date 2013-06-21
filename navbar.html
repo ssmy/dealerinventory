@@ -1,0 +1,35 @@
+      <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+          <a class="brand" href="#">Chicago Cars</a>
+          <ul class="nav">
+            <li><a href="/cs487/menu.php">Home</a></li>
+            <li><a href="/cs487/customers.php">Customers</a></li>
+            <li><a href="/cs487/cars.php">Cars</a></li>
+            <li><a href="/cs487/parts.php">Parts</a></li>
+            <li><a href="/cs487/sales.php">Sales</a></li>
+            <li><a href="/cs487/admin.php">Admin</a></li>
+          </ul>
+        </div>
+        <script>
+          $(function(){
+            function stripTrailingSlash(str) {
+              if(str.substr(-1) == '/') {
+                return str.substr(0, str.length - 1);
+              }
+              return str;
+            }
+
+            var url = window.location.pathname;  
+            var activePage = stripTrailingSlash(url);
+
+            $('.nav li a').each(function(){  
+              var currentPage = stripTrailingSlash($(this).attr('href'));
+
+              if (activePage == currentPage) {
+                $(this).parent().addClass('active'); 
+              } 
+            });
+          });
+        </script>
+      </div>
+
