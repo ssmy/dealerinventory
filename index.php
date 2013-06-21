@@ -14,12 +14,8 @@ if (isset($_SESSION['userid'])) {
     die();
   }
 }
+make_head("Login");
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Chicago Cars</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
     <style>
       body {
         padding-top: 40px;
@@ -35,7 +31,6 @@ if (isset($_SESSION['userid'])) {
         background-color: #fff;
       }
     </style>
-  </head>
   <body>
     <h1 class="text-center">Chicago Cars Inventory Management</h1>
     <div class="container">

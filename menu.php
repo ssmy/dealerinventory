@@ -8,14 +8,8 @@ function get_count($table) {
   $res = $db->query('SELECT * FROM ' . $table);
   return $res->num_rows;
 }
+make_head("Menu");
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Chicago Cars Inventory</title>
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
-    <script src="jquery-1.10.1.min.js"></script>
-  </head>
   <body>
     <div class="container">
       <?php include('navbar.html'); ?>
