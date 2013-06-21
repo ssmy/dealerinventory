@@ -2,15 +2,16 @@
 include('util.php');
 session_start();
 if (isset($_SESSION['userid'])) {
-  print("Logged in via cookie");
+  header("Location: " . "menu.php");
+  die();
 } elseif (isset($_POST['username'])) {
   $db = connect_db();
   $res = $db->query('SELECT * FROM employees WHERE username="' . $_POST['username'] . '" AND PASSWORD="' . sha1($_POST['password']) . '"');
   if ($res->num_rows) {
     $return = $res->fetch_row();
     $_SESSION['userid'] = $return[0];
-    print($_SESSION['userid']);
-    print("Login Successful");
+    header("Location: " . "menu.php");
+    die();
   }
 }
 ?>
