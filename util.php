@@ -19,6 +19,13 @@ function connect_db() {
   return $db;
 }
 
+// Check if user is a manager
+function is_manager() {
+  $db = connect_db();
+  $res = $db->query('SELECT * FROM employees WHERE employeeid=' . $_SESSION['userid'] . ' AND rankid=1');
+  return $res->num_rows ? true : false;
+}
+
 // Generate top section with specified title.
 function make_head($title) {
 ?>
