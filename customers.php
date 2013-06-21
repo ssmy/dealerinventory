@@ -18,7 +18,7 @@ make_head("Customers");
         <td>Email</td>
       </tr>
 <?php
-$res = $db->query("SELECT * FROM customers c, people p, cities ci WHERE p.personid=c.personid AND p.city=ci.cityid");
+$res = $db->query("SELECT * FROM customers c, people p, cities ci WHERE p.personid=c.personid AND p.cityid=ci.cityid");
 while ($r = $res->fetch_assoc()) {
   echo "<td>" . $r["firstname"] . "</td>";
   echo "<td>" . $r["lastname"] . "</td>";
