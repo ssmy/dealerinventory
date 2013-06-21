@@ -19,3 +19,16 @@ function connect_db() {
   return $db;
 }
 
+// Generate top section with specified title.
+function make_head($title) {
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Chicago Cars :: <?=$title ?></title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="jquery-1.10.1.min.js"></script>
+  </head>
+<?php
+}
+?>
