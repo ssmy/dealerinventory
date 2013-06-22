@@ -20,14 +20,19 @@ make_head("Customers");
 <?php
 $res = $db->query("SELECT * FROM customers c, people p, cities ci WHERE p.personid=c.personid AND p.cityid=ci.cityid");
 while ($r = $res->fetch_assoc()) {
+  echo "<tr>";
   echo "<td>" . $r["firstname"] . "</td>";
   echo "<td>" . $r["lastname"] . "</td>";
   echo "<td>" . $r["address"] . "</td>";
   echo "<td>" . $r["city"] . ", " . $r['state'] . "</td>";
   echo "<td>" . $r["phone"] . "</td>";
   echo "<td>" . $r["email"] . "</td>";
+  echo "</tr>\n";
   }
   ?>
     </table>
+    <form action=addCustomer.php>
+      <input type="submit" value="Add Customer" class="btn btn-primary">
+    </form>
   </div>
 </html>
