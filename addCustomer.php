@@ -23,6 +23,11 @@ if (isset($_POST['submit'])) {
         if ($res) {
           $personid=mysqli_insert_id($db);
           $res2 = mysqli_query($db,'INSERT INTO customers (personid, contacttype) VALUES ('.$personid.','.$_POST['contacttype'].');');
+          $_POST['firstname']="";
+          $_POST['lastname']="";
+          $_POST['email']="";
+          $_POST['address']="";
+          $_POST['phone']="";
           if ($res2) {
             echo '<div class="alert alert-success">Customer successfully created</div>';
           } else {
@@ -47,6 +52,7 @@ if (isset($_POST['submit'])) {
         <input type="text" name="lastname" <? echo ((isset($_POST['lastname']) && $_POST['lastname'] != "") ? "value=".$_POST['lastname'] : "placeholder=\"Last name\""); ?>><br/>
         <input type="text" name="email" <? echo ((isset($_POST['email']) && $_POST['email'] != "") ? "value=".$_POST['email'] : "placeholder=\"Email\""); ?>><br/>
         <input type="text" name="address" <? echo ((isset($_POST['address']) && $_POST['address'] != "") ? "value=".$_POST['address'] : "placeholder=\"Address\""); ?>><br/>
+        City:<br />
         <select name="city">
           <?
           $res3 = $db->query("SELECT * FROM cities c");
@@ -56,6 +62,7 @@ if (isset($_POST['submit'])) {
           ?>
         </select><br />
         <input type="text" name="phone" <? echo ((isset($_POST['phone']) && $_POST['phone'] != "") ? "value=".$_POST['phone'] : "placeholder=\"Phone\""); ?>><br/>
+        Contact Type:<br />
         <select name="contacttype">
           <?
           $res4 = $db->query("SELECT * FROM contacttypes c");
@@ -64,8 +71,13 @@ if (isset($_POST['submit'])) {
           }
           ?>
         </select><br />
+        <table name="buttontable"><tr><td>
         <button class="btn btn-large btn-primary">Add Customer</button>
+      </form></td><td>
+      <form action="customers.php"><br />
+        <button class="btn btn-large">Cancel</button>
       </form>
+        </td></tr></table>
     </div>
   </body>
 </html> 
