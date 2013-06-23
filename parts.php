@@ -18,12 +18,19 @@ make_head("Parts");
 <?php
 $res = $db->query("SELECT * FROM parts p");
 while ($r = $res->fetch_assoc()) {
+  echo "<tr>";
   echo "<td>" . $r["partid"] . "</td>";
   echo "<td>" . $r["cost"] . "</td>";
   echo "<td>" . $r["name"] . "</td>";
   echo "<td>" . $r["quantity"] . "</td>";
+  echo "</tr>";
   }
   ?>
     </table>
+<?if(is_manager()){?>
+  <form action=addPart.php>
+    <input type="submit" value="Add Parts" class="btn btn-primary">
+  </form>
+<?}?>
   </div>
 </html>
