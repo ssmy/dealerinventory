@@ -1,6 +1,10 @@
 <?php
 include('util.php');
 begin();
+if (!is_manager()) {
+  header('Location: menu.php');
+  die();
+}
 
 make_head("Add Employee");
 ?>

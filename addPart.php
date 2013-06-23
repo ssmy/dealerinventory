@@ -1,6 +1,10 @@
 <?php
 include('util.php');
 begin();
+if (!is_manager()) {
+  header('Location: parts.php');
+  die();
+}
 
 make_head("Add Part");
 ?>
@@ -8,7 +12,7 @@ make_head("Add Part");
     <div class="container">
       <? include('navbar.html') ?>
       <h1>Add Part</h1>
-<?php if(is_manager()){
+<?php
 $db = connect_db();
 if (isset($_POST['newsubmit'])) {
   if ($_POST['newpartname'] != "") {
@@ -45,9 +49,8 @@ if (isset($_POST['addsubmit'])){
     }
   }
 }
-} ?>
+ ?>
 
-<? if(is_manager()){ ?>
       <div class="tabbable">
         <ul class="nav nav-tabs">
           <li <?if(!isset($_POST['addsubmit'])) echo "class=\"active\"";?>><a href="#newpart" data-toggle="tab">New Part</a></li>
@@ -91,9 +94,6 @@ if (isset($_POST['addsubmit'])){
           </div>
         </div><!--tab content-->
       </div><!--tabbable-->
-<?} else{?>
-    <h3>Only Managers can add parts</h3>
-<?}?>
     </div><!--container-->
   </body>
 </html> 
