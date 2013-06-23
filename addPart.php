@@ -9,9 +9,8 @@ make_head("Add Part");
       <? include('navbar.html') ?>
       <h1>Add Part</h1>
 <?php if(is_manager()){
-$basestatus = 1;
 $db = connect_db();
-if (isset($_POST['submit'])) {
+if (isset($_POST['newsubmit'])) {
   if ($_POST['firstname'] != "" && $_POST['lastname'] != "") {
     if ($_POST['email'] != "") {
       if ($_POST['address'] == "") {
@@ -63,45 +62,65 @@ if (isset($_POST['submit'])) {
 } ?>
 
 <? if(is_manager()){ ?>
-      <form method="post" action="addEmployee.php">
-        <input type="hidden" name="submit">
-        <input type="text" name="firstname" <? echo ((isset($_POST['firstname']) && $_POST['firstname'] != "") ? "value=".$_POST['firstname'] : "placeholder=\"First name\""); ?>><br/>
-        <input type="text" name="lastname" <? echo ((isset($_POST['lastname']) && $_POST['lastname'] != "") ? "value=".$_POST['lastname'] : "placeholder=\"Last name\""); ?>><br/>
-        <input type="text" name="email" <? echo ((isset($_POST['email']) && $_POST['email'] != "") ? "value=".$_POST['email'] : "placeholder=\"Email\""); ?>><br/>
-        <input type="text" name="address" <? echo ((isset($_POST['address']) && $_POST['address'] != "") ? "value=".$_POST['address'] : "placeholder=\"Address\""); ?>><br/>
-        City:<br />
-        <select name="city">
-          <?
-          $res3 = $db->query("SELECT * FROM cities c");
-          while ($r = $res3->fetch_assoc()) {
-            echo "<option value=".$r['cityid'].">" . $r["city"] . ", " . $r['state']  . "</option>\n";
-          }
-          ?>
-        </select><br />
-        <input type="text" name="phone" <? echo ((isset($_POST['phone']) && $_POST['phone'] != "") ? "value=".$_POST['phone'] : "placeholder=\"Phone\""); ?>><br/>
-        <input type="text" name="user" <? echo ((isset($_POST['user']) && $_POST['user'] != "") ? "value=".$_POST['user'] : "placeholder=\"Username\""); ?>><br/>
-        <input type="password" name="pass" placeholder="Password"><br/>
-        <input type="password" name="duppass" placeholder="Confirm password"><br/>
-        Rank:<br />
-        <select name="rank">
-          <?
-          $res4 = $db->query("SELECT * FROM ranks r");
-          while ($r = $res4->fetch_assoc()) {
-            echo "<option value=".$r['rankid'].">" . $r["rank"] . "</option>\n";
-          }
-          ?>
-        </select><br />
-        <table name="buttontable"><tr><td>
-        <button class="btn btn-large btn-primary">Add Employee</button>
-      </form></td><td>
-      <form action="employees.php"><br />
-        <button class="btn btn-large">Cancel</button>
-      </form>
-        </td></tr></table>
-    </div>
-
+      <!--<script>
+        $('#addPart a').click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        })
+      </script>-->
+      <div class="tabbable">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#newpart" data-toggle="tab">New Part</a></li>
+          <li><a href="#addpart" data-toggle="tab">Additional Parts</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="newpart" class="tab-pane active">
+            <form method="post" action="addPart.php">
+              <input type="hidden" name="newsubmit">
+              <input type="text" name="newpartname" <? echo ((isset($_POST['newpartname']) && $_POST['newpartname'] != "") ? "value=".$_POST['newpartname'] : "placeholder=\"Part name\""); ?>><br/>
+              <input type="text" name="newpartquantity" <? echo ((isset($_POST['newpartquantity']) && $_POST['newpartquantity'] != "") ? "value=".$_POST['newpartquantity'] : "placeholder=\"Quantity\""); ?>><br/>
+              <input type="text" name="newpartcost" <? echo ((isset($_POST['newpartcost']) && $_POST['newpartcost'] != "") ? "value=".$_POST['newpartcost'] : "placeholder=\"Cost\""); ?>><br/>
+              <table name="buttontable"><tr><td>
+                <button class="btn btn-large btn-primary">Add Employee</button>
+            </form></td><td>
+            <form action="parts.php"><br />
+              <button class="btn btn-large">Cancel</button>
+            </form>
+              </td></tr></table>
+          </div>
+          <div id="addpart" class="tab-pane">
+            <form method="post" action="addPart.php">
+              <input type="hidden" name="addsubmit">
+              <input type="text" name="user" <? echo ((isset($_POST['user']) && $_POST['user'] != "") ? "value=".$_POST['user'] : "placeholder=\"Username\""); ?>><br/>
+              <input type="password" name="pass" placeholder="Password"><br/>
+              <input type="password" name="duppass" placeholder="Confirm password"><br/>
+              Rank:<br />
+              <select name="rank">
+                <?
+                  $res4 = $db->query("SELECT * FROM ranks r");
+                  while ($r = $res4->fetch_assoc()) {
+                    echo "<option value=".$r['rankid'].">" . $r["rank"] . "</option>\n";
+                  }
+                ?>
+              </select><br />
+              <table name="buttontable"><tr><td>
+                <button class="btn btn-large btn-primary">Add Employee</button>
+            </form></td><td>
+            <form action="parts.php"><br />
+              <button class="btn btn-large">Cancel</button>
+            </form>
+              </td></tr></table>
+          </div>
+        </div><!--tab content-->
+        <script>
+          $(function () {
+            $('#myTab a:last').tab('show');
+          })
+        </script>
+      </div><!--tabbable-->
 <?} else{?>
     <h3>Only Managers can add parts</h3>
 <?}?>
+    </div><!--container-->
   </body>
 </html> 
