@@ -137,11 +137,11 @@ CREATE TABLE IF NOT EXISTS `employees` (
 INSERT INTO `employees` (`employeeid`, `personid`, `username`, `password`, `rankid`, `statusid`) VALUES
 (1, 1, 'danemp', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 2, 1),
 (2, 1, 'danman', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 1, 1),
-(3, 2, 'ronemp', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1);
-(4, 2, 'ronman', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 1, 1);
-(5, 3, 'tonyemp', '1001e8702733cced254345e193c88aaa47a4f5de', 2, 1);
-(6, 3, 'tonyman', '1001e8702733cced254345e193c88aaa47a4f5de', 1, 1);
-(7, 4, 'joshemp', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 2, 1);
+(3, 2, 'ronemp', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1),
+(4, 2, 'ronman', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 1, 1),
+(5, 3, 'tonyemp', '1001e8702733cced254345e193c88aaa47a4f5de', 2, 1),
+(6, 3, 'tonyman', '1001e8702733cced254345e193c88aaa47a4f5de', 1, 1),
+(7, 4, 'joshemp', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 2, 1),
 (8, 4, 'joshman', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 1, 1);
 -- --------------------------------------------------------
 
