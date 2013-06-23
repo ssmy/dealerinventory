@@ -38,7 +38,12 @@ CREATE TABLE IF NOT EXISTS `cities` (
 --
 
 INSERT INTO `cities` (`cityid`, `city`, `state`) VALUES
-(1, 'Chicago', 'IL');
+(1, 'Chicago', 'IL'),
+(2, 'San Diego', 'CA'),
+(3, 'London', 'England'),
+(4, 'New York', 'NY'),
+(5, 'Austin', 'TX'),
+(6, 'Blackburn', 'Scottland');
 
 -- --------------------------------------------------------
 
@@ -57,8 +62,13 @@ CREATE TABLE IF NOT EXISTS `colors` (
 --
 
 INSERT INTO `colors` (`colorid`, `color`) VALUES
-(1, 'Red');
-
+(1, 'Red'),
+(2, 'Green'),
+(3, 'Blue'),
+(4, 'Yellow'),
+(5, 'Black'),
+(6, 'Silver'),
+(7, 'Rust');
 -- --------------------------------------------------------
 
 --
@@ -97,7 +107,12 @@ CREATE TABLE IF NOT EXISTS `customers` (
 --
 
 INSERT INTO `customers` (`customerid`, `personid`, `contacttype`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 4, 1),
+(3, 5, 2),
+(4, 6, 1),
+(5, 7, 2);
+
 
 -- --------------------------------------------------------
 
@@ -120,9 +135,14 @@ CREATE TABLE IF NOT EXISTS `employees` (
 --
 
 INSERT INTO `employees` (`employeeid`, `personid`, `username`, `password`, `rankid`, `statusid`) VALUES
-(1, 1, 'ssmy', 'e996af04ad7ba8bdf4639860ece66bd32369532a', 1, 1),
-(2, 2, 'ron', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1);
-
+(1, 1, 'danemp', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 2, 1),
+(2, 1, 'danman', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 1, 1),
+(3, 2, 'ronemp', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1);
+(4, 2, 'ronman', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 1, 1);
+(5, 3, 'tonyemp', '1001e8702733cced254345e193c88aaa47a4f5de', 2, 1);
+(6, 3, 'tonyman', '1001e8702733cced254345e193c88aaa47a4f5de', 1, 1);
+(7, 4, 'joshemp', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 2, 1);
+(8, 4, 'joshman', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 1, 1);
 -- --------------------------------------------------------
 
 --
@@ -143,7 +163,12 @@ CREATE TABLE IF NOT EXISTS `locations` (
 --
 
 INSERT INTO `locations` (`locationid`, `name`, `address`, `cityid`, `zipid`) VALUES
-(1, 'Dan''s Cars', '3404 S Union Ave', 1, 1);
+(1, 'Dans Bad Business Practices', '3404 S Union Ave', 1, 1),
+(2, 'Good Morning San Diego Autos', '1023 N Main St', 2, 2),
+(3, 'Big Ben\'s Cars and Parts', '12 Clocktower Pl', 3, 3),
+(4, 'Im walkin here car repair', '430 broklin St', 4, 4),
+(5, 'Ride em Pickups', '53123 Cowtipper Rd', 5, 5),
+(6, 'Bar Brawls Moving Buggies', 'East 1st St', 6, 6);
 
 -- --------------------------------------------------------
 
@@ -162,8 +187,13 @@ CREATE TABLE IF NOT EXISTS `makes` (
 --
 
 INSERT INTO `makes` (`makeid`, `make`) VALUES
-(1, 'Ford');
-
+(1, 'Ford'),
+(2, 'Toyota'),
+(3, 'Dodge'),
+(4, 'Chysler'),
+(5, 'Audi'),
+(6, 'Jaguar'),
+(7, 'Jeep');
 -- --------------------------------------------------------
 
 --
@@ -182,8 +212,16 @@ CREATE TABLE IF NOT EXISTS `models` (
 --
 
 INSERT INTO `models` (`modelid`, `makeid`, `model`) VALUES
-(1, 1, 'Focus');
-
+(1, 1, 'Focus'),
+(2, 2, 'Rav4'),
+(3, 1, 'Pinto'),
+(4, 3, 'Ram 1500'),
+(5, 4, 'Sebring'),
+(6, 5, 'A3'),
+(7, 7, 'Liberty'),
+(8, 1, 'Thunderbird'),
+(9, 6, 'F-Type'),
+(10, 1, 'Mustang');
 -- --------------------------------------------------------
 
 --
@@ -203,7 +241,15 @@ CREATE TABLE IF NOT EXISTS `parts` (
 --
 
 INSERT INTO `parts` (`partid`, `cost`, `quantity`, `name`) VALUES
-(1, 112.17, 10, 'Tire');
+(1, 112.17, 10, 'Tire'),
+(2, 19.99, 50, 'Wax'),
+(3, 7.99, 100, 'Air Freshener'),
+(4, 29.99, 25, 'Wipers'),
+(5, 45.00, 10, 'Battery'),
+(6, 25.99, 20, 'Oil Filter'),
+(7, 300.00, 5, 'Radiator'),
+(8, 20.00, 20, 'Oil in a Can'),
+(9, 2.99, 1000, 'Bolts');
 
 -- --------------------------------------------------------
 
@@ -245,7 +291,12 @@ CREATE TABLE IF NOT EXISTS `people` (
 
 INSERT INTO `people` (`personid`, `firstname`, `lastname`, `email`, `address`, `cityid`, `phone`) VALUES
 (1, 'Daniel', 'LaGesse', 'dlagesse1992@gmail.com', '3404 S Union Ave', 1, 8159169783),
-(3, 'Ronald', 'Pyka', 'ronald.pyka@gmail.com', '3404 S Union Ave', 1, 1234567789);
+(2, 'Ronald', 'Pyka', 'ronald.pyka@gmail.com', '3404 S Union Ave', 1, 1234567789),
+(3, 'Antono','Hudson', 'rradioack@gmail.com', '3300 S Ferderal Street', 1, 8328633562),
+(4, 'Ron', 'Burgundy', 'gwamm@thethunder.com', 'First Best Street', 2, 6194685683),
+(5, 'James', 'May', 'ohbollocks@godsavethequeen.eu', 'Capt Slow Ln', 3, 3922182854),
+(6, 'Techno', 'Love', 'wubwub@dropthebass.com', 'Loosey Goosey Lane', 4, 2938182882),
+(7, 'Susan', 'Boyle', 'idreamadream@daysgoneby.uk', 'Good Lungs Ave', 6, 9293828182);
 
 -- --------------------------------------------------------
 
@@ -284,8 +335,30 @@ CREATE TABLE IF NOT EXISTS `statuses` (
 --
 
 INSERT INTO `statuses` (`statusid`, `status`) VALUES
+(1, 'FOR SALE'),
+(2, 'SOLD'),
+(3, 'IN SHOP');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employeestatuses`
+--
+
+CREATE TABLE IF NOT EXISTS `employeestatuses` (
+  `statusid` int(11) NOT NULL AUTO_INCREMENT,
+  `status` text NOT NULL,
+  PRIMARY KEY (`statusid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `employeestatuses`
+--
+
+INSERT INTO `employeestatuses` (`statusid`, `status`) VALUES
 (1, 'ACTIVE'),
-(2, 'FOR SALE');
+(2, 'FIRED'),
+(3, 'RETIRED');
 
 -- --------------------------------------------------------
 
@@ -309,8 +382,16 @@ CREATE TABLE IF NOT EXISTS `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vin`, `vehicleid`, `colorid`, `modelid`, `year`, `statusid`, `locationid`) VALUES
-('3FAHP395X2R233648', 1, 1, 1, 2003, 2, 1);
-
+('3FAHP395X2R233648', 1, 1, 1, 2003, 2, 1),
+('7KDK0294NV0201P6J', 2, 2, 2, 2007, 1, 3),
+('FD30FMWEKWI3MV932', 3, 7, 3, 1993, 3, 1),
+('KDK3FM303O0GNRM31', 4, 4, 4, 2013, 1, 4),
+('EJ032OFI02I3FN228', 5, 6, 5, 2004, 2, 1),
+('AJNEOWCVNOV29WL23', 6, 5, 6, 1999, 1, 6),
+('SGH339FN30FNV73BD', 7, 2, 7, 2013, 2, 2),
+('AJE92FEGLG0G93UY2', 8, 3, 8, 1960, 3, 2),
+('JRJ3393NFO303UFN3', 9, 1, 9, 2001, 1, 1),
+('IEI202NFO23N20H48',10,4, 10, 1974, 1, 5);
 -- --------------------------------------------------------
 
 --
@@ -344,8 +425,12 @@ CREATE TABLE IF NOT EXISTS `zips` (
 --
 
 INSERT INTO `zips` (`zipid`, `zip`) VALUES
-(1, 60616);
-
+(1, 60616),
+(2, 92130),
+(3, 12121),
+(4, 10004),
+(5, 78729),
+(6, 28943);
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
