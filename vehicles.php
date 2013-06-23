@@ -32,5 +32,10 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
+<?if(is_manager()){?>
+  <form action=addVehicle.php>
+    <input type="submit" value="Add Vehicle" class="btn btn-primary">
+  </form>
+<?}?>
   </div>
 </html>
