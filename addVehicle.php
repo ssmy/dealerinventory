@@ -11,42 +11,25 @@ make_head("Add Vehicle");
 <?php
 $db = connect_db();
 if (isset($_POST['submit'])) {
-  if ($_POST['firstname'] != "" && $_POST['lastname'] != "") {
-    if ($_POST['email'] != "") {
-      if ($_POST['address'] == "") {
-        echo '<div class="alert alert-error">Please enter an address</div>';
+  if ($_POST['vin'] != "") {
+    if ($_POST['year'] != "") {
+        $res = mysqli_query($db,'INSERT INTO vehicles (vin, colorid, modelid, year, statusid, locationid) VALUES ("'.$_POST['vin'].'",'.$_POST['color'].','.$_POST['model'].','.$_POST['year'].','.$_POST['status'].','.$_POST['location'].');');
+        $_POST['vin']="";
+        $_POST['year']="";
+      if ($res) {
+        echo '<div class="alert alert-success">Vehicle successfully created</div>';
       } else {
-      if ($_POST['phone'] == "") {
-        echo '<div class="alert alert-error">Please enter a phone number</div>';
-      } else {
-        $res = mysqli_query($db,'INSERT INTO people (firstname, lastname, email, address, cityid, phone) VALUES ("'.$_POST['firstname'].'","'.$_POST['lastname'].'","'.$_POST['email'].'","'.$_POST['address'].'",'.$_POST['city'].','.$_POST['phone'].');');
-        if ($res) {
-          $personid=mysqli_insert_id($db);
-          $res2 = mysqli_query($db,'INSERT INTO customers (personid, contacttype) VALUES ('.$personid.','.$_POST['contacttype'].');');
-          $_POST['firstname']="";
-          $_POST['lastname']="";
-          $_POST['email']="";
-          $_POST['address']="";
-          $_POST['phone']="";
-          if ($res2) {
-            echo '<div class="alert alert-success">Customer successfully created</div>';
-          } else {
-            echo '<div class="alert alert-error">Error creating customer</div>';
-          }  
-        } else {
-          echo '<div class="alert alert-error">Error creating customer</div>';
-        }
-      }//phone error
-      }//address error
+        echo '<div class="alert alert-error">Error creating vehicle</div>';
+      }
     } else {
-      echo '<div class="alert alert-error">Please enter an email</div>';
+      echo '<div class="alert alert-error">Please enter a year</div>';
     }
   } else {
-    echo '<div class="alert alert-error">Please enter both a first and last name</div>';
+    echo '<div class="alert alert-error">Please enter a VIN</div>';
   }
 }
 ?>
-      <form method="post" action="addCustomer.php">
+      <form method="post" action="addVehicle.php">
         <input type="hidden" name="submit">
 
         <input type="text" name="vin" <? echo ((isset($_POST['vin']) && $_POST['vin'] != "") ? "value=".$_POST['vin'] : "placeholder=\"VIN\""); ?>><br/>
@@ -74,7 +57,7 @@ if (isset($_POST['submit'])) {
           }
           function createOption(ddl, text, value) {
             var opt = document.createElement('option');
-            opt.value = value;
+            opt.value = value.split("l").pop();
             opt.text = text;
             ddl.options.add(opt);
           }
@@ -98,7 +81,7 @@ if (isset($_POST['submit'])) {
           echo "<input type=\"hidden\" id=\"modelcount\" value=" . $modelcount . ">\n";
           ?>
         Model:<br />
-        <select name="model" id="model" onclick="configureDropDownLists()">
+        <select name="model" id="model">
         </select><br />
         <input type="text" name="year" <? echo ((isset($_POST['year']) && $_POST['year'] != "") ? "value=".$_POST['year'] : "placeholder=\"Year\""); ?>><br/>
         Status:<br />
@@ -122,7 +105,7 @@ if (isset($_POST['submit'])) {
         <table name="buttontable"><tr><td>
         <button class="btn btn-large btn-primary">Add Vehicle</button>
       </form></td><td>
-      <form action="vehicless.php"><br />
+      <form action="vehicles.php"><br />
         <button class="btn btn-large">Cancel</button>
       </form>
         </td></tr></table>
