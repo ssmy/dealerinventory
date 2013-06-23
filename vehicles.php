@@ -21,12 +21,14 @@ make_head("Vehicles");
 <?php
 $res = $db->query("SELECT * FROM vehicles v, colors c, models m, makes ma, locations l, cities ci WHERE v.colorid=c.colorid AND v.modelid=m.modelid AND m.makeid=ma.makeid AND v.locationid=l.locationid AND l.cityid=ci.cityid");
 while ($r = $res->fetch_assoc()) {
+  echo "<tr>";
   echo "<td>" . $r["vin"] . "</td>";
   echo "<td>" . $r["year"] . "</td>";
   echo "<td>" . $r["color"] . "</td>";
   echo "<td>" . $r["make"] . "</td>";
   echo "<td>" . $r["model"] . "</td>";
   echo "<td>" . $r["city"] . ", " . $r['state'] . "</td>";
+  echo "</tr>";
   }
   ?>
     </table>
