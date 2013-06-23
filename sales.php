@@ -29,7 +29,6 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
-  </div>
     <h1>Part Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
@@ -54,4 +53,5 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
+  </div>
 </html>
