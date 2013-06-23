@@ -108,10 +108,10 @@ CREATE TABLE IF NOT EXISTS `customers` (
 
 INSERT INTO `customers` (`customerid`, `personid`, `contacttype`) VALUES
 (1, 1, 1),
-(2, 4, 1),
-(3, 5, 2),
-(4, 6, 1),
-(5, 7, 2);
+(2, 5, 1),
+(3, 6, 2),
+(4, 7, 1),
+(5, 8, 2);
 
 
 -- --------------------------------------------------------
@@ -293,10 +293,11 @@ INSERT INTO `people` (`personid`, `firstname`, `lastname`, `email`, `address`, `
 (1, 'Daniel', 'LaGesse', 'dlagesse1992@gmail.com', '3404 S Union Ave', 1, 8159169783),
 (2, 'Ronald', 'Pyka', 'ronald.pyka@gmail.com', '3404 S Union Ave', 1, 1234567789),
 (3, 'Antono','Hudson', 'rradioack@gmail.com', '3300 S Ferderal Street', 1, 8328633562),
-(4, 'Ron', 'Burgundy', 'gwamm@thethunder.com', 'First Best Street', 2, 6194685683),
-(5, 'James', 'May', 'ohbollocks@godsavethequeen.eu', 'Capt Slow Ln', 3, 3922182854),
-(6, 'Techno', 'Love', 'wubwub@dropthebass.com', 'Loosey Goosey Lane', 4, 2938182882),
-(7, 'Susan', 'Boyle', 'idreamadream@daysgoneby.uk', 'Good Lungs Ave', 6, 9293828182);
+(4, 'Josh', 'Moser', 'joshuamoser@gmail.com', '1234 S. Prarie Ave', 1, 9876543210),
+(5, 'Ron', 'Burgundy', 'gwamm@thethunder.com', 'First Best Street', 2, 6194685683),
+(6, 'James', 'May', 'ohbollocks@godsavethequeen.eu', 'Capt Slow Ln', 3, 3922182854),
+(7, 'Techno', 'Love', 'wubwub@dropthebass.com', 'Loosey Goosey Lane', 4, 2938182882),
+(8, 'Susan', 'Boyle', 'idreamadream@daysgoneby.uk', 'Good Lungs Ave', 6, 9293828182);
 
 -- --------------------------------------------------------
 
