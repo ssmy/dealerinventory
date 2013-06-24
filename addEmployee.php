@@ -89,7 +89,7 @@ if (isset($_POST['submit'])) {
           <?
           $res4 = $db->query("SELECT * FROM ranks r");
           while ($r = $res4->fetch_assoc()) {
-            echo "<option value=".$r['rankid'].">" . $r["rank"] . "</option>\n";
+            echo "<option value=".$r['rankid'].">" . ucwords(strtolower($r["rank"])) . "</option>\n";
           }
           ?>
         </select><br />
