@@ -57,6 +57,7 @@ while ($r = $res->fetch_assoc()) {
                 $('#message').text("Customer added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
+                $('#custform')[0].reset();
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -79,7 +80,7 @@ while ($r = $res->fetch_assoc()) {
       </div>
       <div class="modal-body">
         <div id="message" style="display: none;"></div>
-        <form method="post" action="addCustomer.php">
+        <form method="post" id="custform">
           <input type="hidden" name="submit">
           <input type="text" id="firstname" <? echo ((isset($_POST['firstname']) && $_POST['firstname'] != "") ? "value=".$_POST['firstname'] : "placeholder=\"First name\""); ?>><br/>
           <input type="text" id="lastname" <? echo ((isset($_POST['lastname']) && $_POST['lastname'] != "") ? "value=".$_POST['lastname'] : "placeholder=\"Last name\""); ?>><br/>
