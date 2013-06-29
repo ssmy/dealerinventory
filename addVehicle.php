@@ -2,25 +2,49 @@
 include('util.php');
 begin();
 $db = connect_db();
-if (isset($_POST['submit'])) {
-  if ($_POST['vin'] != "") {
-    if ($_POST['year'] != "") {
+if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
+  if ($_POST['vin'] != "" && $_POST['year'] != "") {
+    if ($_POST['make'] != 0 && $_POST['model'] != 0) {
+      if($_POST['action']=="add"){
         $res = mysqli_query($db,'INSERT INTO vehicles (vin, colorid, modelid, year, statusid, locationid) VALUES ("'.$_POST['vin'].'",'.$_POST['color'].','.$_POST['model'].','.$_POST['year'].','.$_POST['status'].','.$_POST['location'].');');
-        $_POST['vin']="";
-        $_POST['year']="";
+      } else {
+        $res = mysqli_query($db,'UPDATE vehicles SET vin="'.$_POST['vin'].'", colorid='.$_POST['color'].', modelid='.$_POST['model'].', year='.$_POST['year'].', statusid='.$_POST['status'].', locationid='.$_POST['location'].' WHERE vehicleid='.$_POST['vehicleid'].';');
+      }
       if ($res) {
         $return['error'] = false;
       } else {
         $return['error'] = true;
-        $return['msg'] = "Error creating vehicle";
+        $return['msg'] = ($_POST['action']=="add" ? "Error creating vehicle" : "Error updating vehicle");
       }
-    } else {
-      $return['error'] = true;
-      $return['msg'] = "Please enter a year";
+    } else {//make or model not set
+      if ($_POST['make']==0){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a make";
+      }
+      if ($_POST['model']==0){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a model";
+      }
     }
+  } else {//vin or year not set
+      if ($_POST['vin']==""){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a VIN";
+      }
+      if ($_POST['year']==""){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a year";
+      }
+  }
+  echo json_encode($return);
+}
+if (isset($_POST['submit']) && $_POST['action']=="delete"){
+  $res = mysqli_query($db,'DELETE FROM vehicles WHERE vehicleid='.$_POST['vehicleid'].');');
+  if ($res) {
+    $return['error'] = false;
   } else {
     $return['error'] = true;
-    $return['msg'] = "Please enter a VIN";
+    $return['msg'] = "Error deleting vehicle";
   }
   echo json_encode($return);
 }
