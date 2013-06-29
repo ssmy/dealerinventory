@@ -63,7 +63,7 @@ while ($r = $res->fetch_assoc()) {
                 $('#message').text("Vehicle added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#custform')[0].reset();
+                $('#form')[0].reset();
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -100,25 +100,36 @@ while ($r = $res->fetch_assoc()) {
           </select><br />
           <script type="text/javascript">
             function configureDropDownLists() {
-              var modelcount=$('#modelcount').val();
-              document.getElementById("model").options.length = 0;
-              var make=$('#make').val();
-              for(var i=0;i<modelcount;i++){
-                var curmodel=document.getElementById("model"+(i+1));
-                if (curmodel.value==make){
-                  createOption(document.getElementById("model"), curmodel.name, curmodel.id);
+              <?
+                echo "var makeMapping = {";
+                $res4 =$db->query("SELECT makeid FROM makes m");
+                while($r=$res4->fetch_assoc()){
+                  echo $r['makeid'].": [";
+                    $resn = $db->query("SELECT modelid, model FROM models m WHERE makeid=".$r['makeid']);
+                    while($r2=$resn->fetch_assoc()){
+                      echo "[".$r2['modelid'].", \"".$r2['model']."\"], ";
+                    }
+                  echo "], ";
                 }
+                echo "};\n";
+              ?>
+              var make=$('#make').val();
+              $('#modeldiv').attr("style","");
+              createOption(document.getElementById('model'),"Please Select a Model",0);
+              for(var i=0;i<makeMapping[make].length;i++){
+                createOption(document.getElementById("model"), makeMapping[make][i][1], makeMapping[make][i][0]);
               }
             }
             function createOption(ddl, text, value) {
               var opt = document.createElement('option');
-              opt.value = value.split("l").pop();
+              opt.value = value;
               opt.text = text;
               ddl.options.add(opt);
             }
             </script>
             Make:<br />
             <select id="make" onchange="configureDropDownLists()">
+              <option value="0">Please Select a Make</option>
               <?
               $res3 = $db->query("SELECT * FROM makes m");
               while ($r = $res3->fetch_assoc()) {
@@ -126,18 +137,10 @@ while ($r = $res->fetch_assoc()) {
               }
               ?>
             </select><br />
-            <?
-            $res4 =$db->query("SELECT * FROM models m");
-            $modelcount=0;
-            while ($r = $res4->fetch_assoc()) {
-            echo "<input type=\"hidden\" id=\"model".$r['modelid']."\" value=\"" . $r["makeid"] . "\" id=\"" . $r['model']  . "\">\n";
-            $modelcount++;
-            }
-            echo "<input type=\"hidden\" id=\"modelcount\" value=" . $modelcount . ">\n";
-            ?>
+            <div id="modeldiv" style="display:none">
             Model:<br />
             <select id="model">
-            </select><br />
+            </select></div>
             <input type="text" id="year" placeholder="Year"><br/>
             Status:<br />
             <select id="status">
