@@ -29,6 +29,101 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
+    <script>
+      $(document).ready(function() {
+        $('#triggerAdd').click(function() {
+          $('#addModal').modal({show:true});
+        });
+
+        function reset() {
+          $('#form')[0].reset();
+        }
+
+        $('.reset').click(function() {
+          reset();
+        });
+
+        $('#submit').click(function() {
+          $.ajax({
+            type:     'POST',
+            url:      'addSale.php',
+            dataType: 'json',
+            data:     {
+              submit: 'submit',
+              customer: $('#customer').val(),
+              employee: $('#employee').val(),
+              vehicle: $('#vehicle').val(),
+              dateSold: $('#dateSold').val(),
+              salePrice: $('#salePrice').val()
+            },
+            success: function(data) {
+              if (data.error == false) {
+                $('#message').text("Customer added successfully");
+                $('#message').attr('class', 'alert alert-success');
+                $('#message').attr('style', '');
+                $('#custform')[0].reset();
+                } else {
+                $('#message').text(data.msg);
+                $('#message').attr('class', 'alert alert-error');
+                $('#message').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              $('#message').text("Error adding customer");
+              $('#message').attr('class', 'alert alert-error');
+              $('#message').attr('style', '');
+            }
+          });
+        });
+      });
+    </script>
+    <a id="triggerAdd" class="btn btn-primary">Add new vehicle sale</a>
+    <div id="addModal" class="modal hide fade" data-backdrop="static">
+      <div class="modal-header">
+        <h3>Add new vehicle sale</h3>
+      </div>
+      <div class="modal-body">
+        <div id="message" style="display: none;"></div>
+        <form method="post" id="form">
+          Customer:<br/>
+          <select id="customer">
+<?
+$res = $db->query('SELECT * FROM customers c, people p WHERE c.personid=p.personid');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['customerid'] . '">' . $r['firstname'] . " " . $r['lastname'] . '</option>';
+}
+?>
+          </select>
+          <br/>Employee:<br/>
+          <select id="employee">
+<?
+$res = $db->query('SELECT * FROM employees e, people p WHERE e.personid=p.personid');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['employeeid'] . '">' . $r['firstname'] . " " . $r['lastname'] . '</option>';
+}
+?>
+          </select>
+          <br/>Vehicle:<br/>
+          <select id="vehicle">
+<?
+$res = $db->query('SELECT * FROM vehicles v, makes m, models mo WHERE v.statusid=1 AND v.modelid=mo.modelid AND mo.makeid=m.makeid');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['vehicleid'] . '">' . $r['year'] . " " . $r['make'] . " " . $r['model'] . " (" . $r['vin'] . ')</option>';
+}
+?>
+          </select>
+          <br/>Date sold:<br/>
+          <input id="dateSold" type="date"/>
+          <br/>Sale price:<br/>
+          <input type="text" id="salePrice" placeholder="Sale price"/>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn reset">Reset</a>
+        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a id="submit" class="btn btn-primary">Add Customer</a>
+      </div>
+    </div>
     <h1>Part Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
