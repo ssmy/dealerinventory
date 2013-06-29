@@ -4,7 +4,7 @@ begin();
 $db = connect_db();
 make_head("Vehicles");
 ?>
-<html>
+<body>
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Vehicles</h1>
@@ -38,4 +38,5 @@ while ($r = $res->fetch_assoc()) {
   </form>
 <?}?>
   </div>
+</body>
 </html>

@@ -4,7 +4,7 @@ begin();
 $db = connect_db();
 make_head("Customers");
 ?>
-<html>
+<body>
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Customers</h1>
@@ -35,4 +35,5 @@ while ($r = $res->fetch_assoc()) {
       <input type="submit" value="Add Customer" class="btn btn-primary">
     </form>
   </div>
+</body>
 </html>

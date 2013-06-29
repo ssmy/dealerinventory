@@ -40,5 +40,6 @@ while ($r = $res->fetch_assoc()) {
       <input type="submit" value="Add Employee" class="btn btn-primary">
     </form>
   </div>
+</body>
 </html>
 
