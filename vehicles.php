@@ -95,7 +95,11 @@ while ($r = $res->fetch_assoc()) {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#form')[0].reset();
+                $('#form').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal').modal('toggle')
+                }, 2000);
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
