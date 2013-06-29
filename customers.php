@@ -37,6 +37,10 @@ while ($r = $res->fetch_assoc()) {
           $('#addModal').modal({show:true});
         });
 
+        $('.reset').click(function() {
+          $('#custform')[0].reset();
+        });
+
         $('#submit').click(function() {
           $.ajax({
             type:     'POST',
@@ -105,9 +109,13 @@ while ($r = $res->fetch_assoc()) {
             }
             ?>
           </select><br />
-          <a id="submit" class="btn btn-large btn-primary">Add Customer</a>
         </form>
       </div> <!-- body -->
+      <div class="modal-footer">
+        <a class="btn reset">Reset</a>
+        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a id="submit" class="btn btn-primary">Add Customer</a>
+      </div>
     </div>
   </div>
 </body>
