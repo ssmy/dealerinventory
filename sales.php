@@ -33,6 +33,7 @@ while ($r = $res->fetch_assoc()) {
       $(document).ready(function() {
         $('#triggerAdd').click(function() {
           $('#addModal').modal({show:true});
+          $action = "add";
         });
 
         function reset() {
@@ -46,19 +47,20 @@ while ($r = $res->fetch_assoc()) {
         $('#submit').click(function() {
           $.ajax({
             type:     'POST',
-            url:      'addSale.php',
+            url:      'addVehicleSale.php',
             dataType: 'json',
             data:     {
               submit: 'submit',
+              action: $action,
               customer: $('#customer').val(),
               employee: $('#employee').val(),
               vehicle: $('#vehicle').val(),
-              dateSold: $('#dateSold').val(),
-              salePrice: $('#salePrice').val()
+              date: $('#date').val(),
+              price: $('#sale').val()
             },
             success: function(data) {
               if (data.error == false) {
-                $('#message').text("Customer added successfully");
+                $('#message').text("Sale added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
                 $('#custform')[0].reset();
@@ -69,7 +71,7 @@ while ($r = $res->fetch_assoc()) {
               }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-              $('#message').text("Error adding customer");
+              $('#message').text("Error adding sale");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
             }
@@ -113,15 +115,15 @@ while ($r = $res->fetch_assoc()) {
 ?>
           </select>
           <br/>Date sold:<br/>
-          <input id="dateSold" type="date"/>
+          <input id="date" type="date"/>
           <br/>Sale price:<br/>
-          <input type="text" id="salePrice" placeholder="Sale price"/>
+          <input type="text" id="sale" placeholder="Sale price"/>
         </form>
       </div>
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
         <a class="btn reset" data-dismiss="modal">Close</a>
-        <a id="submit" class="btn btn-primary">Add Customer</a>
+        <a id="submit" class="btn btn-primary">Make sale</a>
       </div>
     </div>
     <h1>Part Sales</h1>
