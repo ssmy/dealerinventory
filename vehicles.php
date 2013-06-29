@@ -15,19 +15,26 @@ make_head("Vehicles");
         <th>Color</th>
         <th>Make</th>
         <th>Model</th>
+        <th>Status</th>
         <th>Location</th>
+        <th>Edit | Delete</th>
 <? // TODO: Add status ?>
       </tr>
 <?php
-$res = $db->query("SELECT * FROM vehicles v, colors c, models m, makes ma, locations l, cities ci WHERE v.colorid=c.colorid AND v.modelid=m.modelid AND m.makeid=ma.makeid AND v.locationid=l.locationid AND l.cityid=ci.cityid");
+$res = $db->query("SELECT * FROM vehicles v, colors c, models m, makes ma, locations l, cities ci, statuses s WHERE v.colorid=c.colorid AND v.modelid=m.modelid AND m.makeid=ma.makeid AND v.locationid=l.locationid AND l.cityid=ci.cityid AND v.statusid=s.statusid");
 while ($r = $res->fetch_assoc()) {
   echo "<tr>";
-  echo "<td>" . $r["vin"] . "</td>";
+  echo "<td data-vehicleid=\"" . $r['vehicleid'] . "\">" . $r["vin"] . "</td>";
   echo "<td>" . $r["year"] . "</td>";
   echo "<td>" . $r["color"] . "</td>";
   echo "<td>" . $r["make"] . "</td>";
   echo "<td>" . $r["model"] . "</td>";
-  echo "<td>" . $r["city"] . ", " . $r['state'] . "</td>";
+  echo "<td>" . ucwords(strtolower($r["status"])) . "</td>";
+  echo "<td>" . $r["name"] . "</td>";
+  if(is_manager()) {
+    echo "<td><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a> | ";
+    echo "<a href=\"#\" class=\"delete\"><i class=\"icon-trash\"></i></a></td>";
+  }
   echo "</tr>";
   }
   ?>
@@ -36,7 +43,30 @@ while ($r = $res->fetch_assoc()) {
     <script>
       $(document).ready(function() {
         $('#triggerAdd').click(function() {
+          $('#form')[0].reset();
           $('#addModal').modal({show:true});
+          $action = "add";
+        });
+
+        $('.delete').click(function() {
+          alert('delete ' + $(this).closest("tr")[0].rowIndex);
+        });
+
+        $('.edit').click(function() {
+          $row = $(this).closest("tr")[0].cells;
+          $('#vin').val($row[0].innerHTML);
+          $('#color option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
+          $('#make option:contains(' + $row[3].innerHTML + ')').prop({selected: true})
+          configureDropDownLists();
+          $('#model option:contains(' + $row[4].innerHTML + ')').prop({selected: true})
+          $('#year').val($row[1].innerHTML);
+          $('#status option:contains(' + $row[5].innerHTML + ')').prop({selected: true})
+          $('#location option:contains(' + $row[6].innerHTML + ')').prop({selected: true})
+          $('.modal-header h3').text('Update Vehicle');
+          $('#submit').text("Update Vehicle");
+          $('#addModal').modal({show:true}); 
+          $vehicleid = $row[0].getAttribute('data-vehicleid');
+          $action = "update";
         });
 
         $('.reset').click(function() {
@@ -50,6 +80,8 @@ while ($r = $res->fetch_assoc()) {
             dataType: 'json',
             data:     {
               submit: 'submit',
+              action: $action,
+              vehicleid: $vehicleid,
               vin: $('#vin').val(),
               color: $('#color').val(),
               make: $('#make').val(),
@@ -60,7 +92,7 @@ while ($r = $res->fetch_assoc()) {
             },
             success: function(data) {
               if (data.error == false) {
-                $('#message').text("Vehicle added successfully");
+                $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
                 $('#form')[0].reset();
@@ -72,7 +104,7 @@ while ($r = $res->fetch_assoc()) {
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.log(XMLHttpRequest);
-              $('#message').text("Error adding vehicle");
+              $('#message').text("Error modifying vehicle");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
             }
