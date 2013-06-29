@@ -10,12 +10,12 @@ make_head("Customers");
     <h1>Customers</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>First Name</td>
-        <td>Last Name</td>
-        <td>Address</td>
-        <td>Location</td>
-        <td>Phone</td>
-        <td>Email</td>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>Location</th>
+        <th>Phone</th>
+        <th>Email</th>
       </tr>
 <?php
 $res = $db->query("SELECT * FROM customers c, people p, cities ci WHERE p.personid=c.personid AND p.cityid=ci.cityid");

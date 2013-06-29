@@ -14,12 +14,12 @@ make_head("Employees");
       <h1>Employees</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>First Name</td>
-        <td>Last Name</td>
-        <td>Address</td>
-        <td>Location</td>
-        <td>Phone</td>
-        <td>Email</td>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>Location</th>
+        <th>Phone</th>
+        <th>Email</th>
 <? // TODO: Add rank, status ?>
       </tr>
 <?php

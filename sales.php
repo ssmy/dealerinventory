@@ -10,12 +10,12 @@ make_head("Sales");
     <h1>Vehicle Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>Sale #</td>
-        <td>Customer #</td>
-        <td>Employee #</td>
-        <td>Vehicle #</td>
-        <td>Date Sold</td>
-        <td>Sale Price</td>
+        <th>Sale #</th>
+        <th>Customer #</th>
+        <th>Employee #</th>
+        <th>Vehicle #</th>
+        <th>Date Sold</th>
+        <th>Sale Price</th>
       </tr>
 <?php
 $res = $db->query("SELECT * FROM vehiclesales p");
@@ -32,13 +32,13 @@ while ($r = $res->fetch_assoc()) {
     <h1>Part Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>Sale #</td>
-        <td>Customer #</td>
-        <td>Employee #</td>
-        <td>Part #</td>
-        <td>Date Sold</td>
-        <td>Sale Price</td>
-        <td>Quantity</td>
+        <th>Sale #</th>
+        <th>Customer #</th>
+        <th>Employee #</th>
+        <th>Part #</th>
+        <th>Date Sold</th>
+        <th>Sale Price</th>
+        <th>Quantity</th>
       </tr>
 <?php
 $res = $db->query("SELECT * FROM partsales p");

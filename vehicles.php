@@ -10,12 +10,12 @@ make_head("Vehicles");
     <h1>Vehicles</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>VIN</td>
-        <td>Year</td>
-        <td>Color</td>
-        <td>Make</td>
-        <td>Model</td>
-        <td>Location</td>
+        <th>VIN</th>
+        <th>Year</th>
+        <th>Color</th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Location</th>
 <? // TODO: Add status ?>
       </tr>
 <?php

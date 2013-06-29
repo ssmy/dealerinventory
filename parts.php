@@ -10,10 +10,11 @@ make_head("Parts");
     <h1>Parts</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <td>Part #</td>
-        <td>Cost</td>
-        <td>Name</td>
-        <td>Quantity</td>
+        <th>Part #</th>
+        <th>Cost</th>
+        <th>Name</th>
+        <th>Quantity</th>
+<? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
 <?php
 $res = $db->query("SELECT * FROM parts p");
@@ -23,6 +24,10 @@ while ($r = $res->fetch_assoc()) {
   echo "<td>" . $r["cost"] . "</td>";
   echo "<td>" . $r["name"] . "</td>";
   echo "<td>" . $r["quantity"] . "</td>";
+  if(is_manager()) {
+    echo "<td><a href=\"#\" class=\"delete\" data-id=\"" . $r["partid"] . "\"><i class=\"icon-trash\"></i></a> | ";
+    echo "<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
+  }
   echo "</tr>";
   }
   ?>
@@ -32,6 +37,10 @@ while ($r = $res->fetch_assoc()) {
       $(document).ready(function() {
         $('#triggerAdd').click(function() {
           $('#addModal').modal({show:true});
+        });
+
+        $('.delete').click(function() {
+          alert($(this).data.id);
         });
 
         function reset() {
