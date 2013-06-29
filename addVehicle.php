@@ -12,6 +12,7 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
       }
       if ($res) {
         $return['error'] = false;
+        $return['msg'] = ($_POST['action']=="add" ? "Vehicle created successfully" : "Vehicle updates successfully");
       } else {
         $return['error'] = true;
         $return['msg'] = ($_POST['action']=="add" ? "Error creating vehicle" : "Error updating vehicle");
@@ -42,6 +43,7 @@ if (isset($_POST['submit']) && $_POST['action']=="delete"){
   $res = mysqli_query($db,'DELETE FROM vehicles WHERE vehicleid='.$_POST['vehicleid'].');');
   if ($res) {
     $return['error'] = false;
+    $return['msg'] = "Vehicle deleted successfully";
   } else {
     $return['error'] = true;
     $return['msg'] = "Error deleting vehicle";
