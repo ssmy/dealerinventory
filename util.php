@@ -36,6 +36,7 @@ function make_head($title) {
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
     <script src="jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-tab.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css"/>
   </head>
 <?php
 }

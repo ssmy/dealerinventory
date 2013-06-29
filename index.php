@@ -16,21 +16,6 @@ if (isset($_SESSION['userid'])) {
 }
 make_head("Login");
 ?>
-    <style>
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
-
-      .form-signin {
-        max-width: 300px;
-        padding: 20px;
-        margin: 0 auto 20px;
-        border: 1px solid #e5e5e5;
-        background-color: #fff;
-      }
-    </style>
   <body>
     <h1 class="text-center">Chicago Cars Inventory Management</h1>
     <div class="container">
