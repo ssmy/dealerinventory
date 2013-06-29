@@ -53,10 +53,20 @@ while ($r = $res->fetch_assoc()) {
               contacttype: $('#contacttype').val()
             },
             success: function(data) {
-              console.log('success');
+              if (data.error == false) {
+                $('#message').text("Customer added successfully");
+                $('#message').attr('class', 'alert alert-success');
+                $('#message').attr('style', '');
+                } else {
+                $('#message').text(data.msg);
+                $('#message').attr('class', 'alert alert-error');
+                $('#message').attr('style', '');
+              }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-              console.log('error');
+              $('#message').text("Error adding customer");
+              $('#message').attr('class', 'alert alert-error');
+              $('#message').attr('style', '');
             }
           });
         });
@@ -68,6 +78,7 @@ while ($r = $res->fetch_assoc()) {
         <h3>Add new customer</h3>
       </div>
       <div class="modal-body">
+        <div id="message" style="display: none;"></div>
         <form method="post" action="addCustomer.php">
           <input type="hidden" name="submit">
           <input type="text" id="firstname" <? echo ((isset($_POST['firstname']) && $_POST['firstname'] != "") ? "value=".$_POST['firstname'] : "placeholder=\"First name\""); ?>><br/>
