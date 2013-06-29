@@ -78,7 +78,7 @@ while ($r = $res->fetch_assoc()) {
       });
     </script>
     <a id="triggerAdd" class="btn btn-primary">Add new customer</a>
-    <div id="addModal" class="modal hide fade">
+    <div id="addModal" class="modal hide fade" data-backdrop="static">
       <div class="modal-header">
         <h3>Add new customer</h3>
       </div>
