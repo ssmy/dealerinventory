@@ -12,7 +12,7 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
       }
       if ($res) {
         $return['error'] = false;
-        $return['msg'] = ($_POST['action']=="add" ? "Vehicle created successfully" : "Vehicle updates successfully");
+        $return['msg'] = ($_POST['action']=="add" ? "Vehicle created successfully" : "Vehicle updated successfully");
       } else {
         $return['error'] = true;
         $return['msg'] = ($_POST['action']=="add" ? "Error creating vehicle" : "Error updating vehicle");
