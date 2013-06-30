@@ -31,7 +31,7 @@ while ($r = $res->fetch_assoc()) {
   echo "<td>" . ucwords(strtolower($r["status"])) . "</td>";
   echo "<td>" . $r["name"] . "</td>";
   if(is_manager()) {
-    echo "<td><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
+    echo "<td class=\"edit\"><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
   }
   echo "</tr>";
   }
@@ -71,8 +71,10 @@ while ($r = $res->fetch_assoc()) {
         });
 
         $('.reset').click(function() {
-          if ($action=="add")
+          if ($action=="add"){
             $('#form')[0].reset();
+            $('#message').attr("style","display:none;");
+          }
           else
             editset($editrow);
         });

@@ -2,51 +2,38 @@
 include('util.php');
 begin();
 if (!is_manager()) {
-  header('Location: parts.php');
+  header('Location: vehicles.php');
   die();
 }
 $db = connect_db();
-if (isset($_POST['newsubmit'])) {
-  if ($_POST['newpartname'] != "") {
-    if ($_POST['newpartquantity'] != "") {
-      if ($_POST['newpartcost'] == "") {
+if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
+  if ($_POST['cost'] != "" && $_POST['name'] != "" && $_POST['quantity']!="") {
+    if($_POST['action']=="add"){
+      $res = $db->query('INSERT INTO parts (cost, quantity, name) VALUES ('.$_POST['cost'].','.$_POST['quantity'].',"'.$_POST['name'].'");');
+    } else {
+      $res = $db->query('UPDATE parts SET cost='.$_POST['cost'].', quantity='.$_POST['quantity'].', name="'.$_POST['name'].'" WHERE partid='.$_POST['partid'].';');
+    }
+    if ($res) {
+      $return['error'] = false;
+      $return['msg'] = ($_POST['action']=="add" ? "Part created successfully" : "Part updated successfully");
+    } else {
+      $return['error'] = true;
+      $return['msg'] = ($_POST['action']=="add" ? "Error creating part" : "Error updating part");
+    }
+  } else {//vin or year not set
+      if ($_POST['cost']==""){
         $return['error'] = true;
         $return['msg'] = "Please enter a cost";
-      } else {
-        $res = mysqli_query($db,'INSERT INTO parts (cost, quantity, name) VALUES ('.$_POST['newpartcost'].','.$_POST['newpartquantity'].',"'.$_POST['newpartname'].'");');
-        $_POST['newpartname']="";
-        $_POST['newpartquantity']="";
-        $_POST['newpartcost']="";
-        if ($res) {
-          $return['error'] = false;
-        } else {
-          $return['error'] = true;
-          $return['msg'] = "Error creating part";
-        }
-      }//cost error
-    } else {
-      $return['error'] = true;
-      $return['msg'] = "Please enter a quantity";
-    }
-  } else {
-    $return['error'] = true;
-    $return['msg'] = "Please enter a part name";
+      }
+      if ($_POST['name']==""){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a name";
+      }
+      if ($_POST['quantity']==""){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a quantity";
+      }
   }
   echo json_encode($return);
 }
-if (isset($_POST['addsubmit'])){
-  if ($_POST['addpartquantity']==""){
-    $return['error'] = true;
-    $return['msg'] = "Please enter a quantity";
-  } else{
-    $res2 = $db->query('UPDATE parts SET quantity=quantity+"' . $_POST['addpartquantity'] . '" WHERE partid=' . $_POST['addpartpart']);
-    if ($db->affected_rows) {
-      $return['error'] = false;
-    } else {
-      $return['error'] = true;
-      $return['msg'] = "Error updating part";
-    }
-  }
-  echo json_encode($return);
-}
- ?>
+?>

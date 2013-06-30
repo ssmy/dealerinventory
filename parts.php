@@ -25,8 +25,7 @@ while ($r = $res->fetch_assoc()) {
   echo "<td>" . $r["name"] . "</td>";
   echo "<td>" . $r["quantity"] . "</td>";
   if(is_manager()) {
-    echo "<td><a href=\"#\" class=\"delete\" data-id=\"" . $r["partid"] . "\"><i class=\"icon-trash\"></i></a> | ";
-    echo "<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
+    echo "<td class=\"edit\"><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
   }
   echo "</tr>";
   }
@@ -36,37 +35,48 @@ while ($r = $res->fetch_assoc()) {
     <script>
       $(document).ready(function() {
         $('#triggerAdd').click(function() {
+          $('#form')[0].reset();
           $('#addModal').modal({show:true});
+          $action = "add";
         });
 
-        $('.delete').click(function() {
-          alert($(this).data.id);
-        });
+        var editrow = null;
 
-        function reset() {
-          $('#form1')[0].reset();
-          $('#form2')[0].reset();
+        function editset($obj){
+          $row = $obj.closest("tr")[0].cells;
+          $('#name').val($row[2].innerHTML);
+          $('#cost').val($row[1].innerHTML);
+          $('#quantity').val($row[3].innerHTML);
+          $('.modal-header h3').text('Update Part');
+          $('#submit').text("Update Part");
+          $('#addModal').modal({show:true}); 
+          $partid = $row[0].innerHTML;
         }
 
+        $('.edit').click(function(){
+          editset($(this));
+          $action = "update";
+          $editrow=$(this);
+        });
+
         $('.reset').click(function() {
-          reset();
+          if ($action=="add"){
+            $('#form')[0].reset();
+            $('#message').attr("style","display:none;");
+          }
+          else
+            editset($editrow);
         });
 
         $('#submit').click(function() {
-          if ($('ul.nav-tabs li.active').text() == "New Part") {
-            $values = {
-              newsubmit: "newsubmit",
-              newpartquantity: $('#newpartquantity').val(),
-              newpartcost: $('#newpartcost').val(),
-              newpartname: $('#newpartname').val()
-            }
-          } else {
-            $values = {
-              addsubmit: "addsubmit",
-              addpartquantity: $('#addpartquantity').val(),
-              addpartpart: $('#addpartpart').val()
-            }
-          }   
+          $values = {
+            submit: "submit",
+            quantity: $('#quantity').val(),
+            cost: $('#cost').val(),
+            name: $('#name').val(),
+            partid: $partid,
+            action: $action
+          }
           $.ajax({
             type:     'POST',
             url:      'addPart.php',
@@ -74,10 +84,14 @@ while ($r = $res->fetch_assoc()) {
             data:     $values,
             success: function(data) {
               if (data.error == false) {
-                $('#message').text("Parts added successfully");
+                $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                reset();
+                $('#form').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal').modal('toggle')
+                }, 2000);
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -85,6 +99,7 @@ while ($r = $res->fetch_assoc()) {
               }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
               $('#message').text("Error adding parts");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
@@ -100,35 +115,11 @@ while ($r = $res->fetch_assoc()) {
       </div>
       <div class="modal-body">
         <div id="message" style="display: none;"></div>
-        <div class="tabbable">
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#newpart" data-toggle="tab">New Part</a></li>
-            <li><a href="#addpart" data-toggle="tab">Additional Parts</a></li>
-          </ul>
-          <div class="tab-content">
-            <div id="newpart" class="tab-pane active">
-              <form method="post" id="form1">
-                <input type="text" id="newpartname" placeholder="Part name"><br/>
-                <input type="text" id="newpartquantity" placeholder="Part quantity"><br/>
-                <input type="text" id="newpartcost" placeholder="Part cost"><br/>
-              </form>
-            </div>
-            <div id="addpart" class="tab-pane">
-              <form method="post" id="form2">
-                Part:<br />
-                <select id="addpartpart">
-                  <?
-                  $res3 = $db->query("SELECT * FROM parts p");
-                  while ($r = $res3->fetch_assoc()) {
-                  echo "<option value=".$r['partid'].">" . $r["name"] . "</option>\n";
-                  }
-                  ?>
-                </select><br />
-                <input type="text" id="addpartquantity" placeholder="Quantity to add"><br/>
-              </form>
-            </div>
-          </div><!--tab content-->
-        </div><!--tabbable-->
+        <form method="post" id="form">
+          <input type="text" id="name" placeholder="Part name"><br/>
+          <input type="text" id="quantity" placeholder="Part quantity"><br/>
+          <input type="text" id="cost" placeholder="Part cost"><br/>
+        </form>
       </div>
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
