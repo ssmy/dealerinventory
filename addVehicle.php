@@ -1,6 +1,10 @@
 <?php
 include('util.php');
 begin();
+if (!is_manager()) {
+  header('Location: vehicles.php');
+  die();
+}
 $db = connect_db();
 if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
   if ($_POST['vin'] != "" && $_POST['year'] != "") {
