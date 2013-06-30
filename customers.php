@@ -8,7 +8,8 @@ make_head("Customers");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Customers</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <div id="dataerror" class="alert alert-error" style="display: none;"></div>
+    <table id="table" class="table table-striped table-bordered table-hover">
       <tr>
         <th>First Name</th>
         <th>Last Name</th>
@@ -16,29 +17,78 @@ make_head("Customers");
         <th>Location</th>
         <th>Phone</th>
         <th>Email</th>
+        <th>Contact</th>
+        <th>Edit</th>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM customers c, people p, cities ci WHERE p.personid=c.personid AND p.cityid=ci.cityid");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td>" . $r["firstname"] . "</td>";
-  echo "<td>" . $r["lastname"] . "</td>";
-  echo "<td>" . $r["address"] . "</td>";
-  echo "<td>" . $r["city"] . ", " . $r['state'] . "</td>";
-  echo "<td>" . $r["phone"] . "</td>";
-  echo "<td>" . $r["email"] . "</td>";
-  echo "</tr>\n";
-  }
-  ?>
     </table>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'customers'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                for (var r = 0; r < data.contents.length; r++) {
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table tr:last').after('<tr>' + $data + '</tr>');
+                }
+                $extradata = data.extra;
+                $('.edit').click(function(){
+                  editset($(this));
+                  $action = "update";
+                  $editrow=$(this);
+                });
+              } else {
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
+            }
+          });
+        }
+        loadData();
+
         $('#triggerAdd').click(function() {
           $('#addModal').modal({show:true});
+          $action = "add";
         });
+        
+        var editrow = null;
+
+        function editset($obj){
+          $row = $obj.closest("tr")[0].cells;
+          $('#firstname').val($row[0].innerHTML);
+          $('#lastname').val($row[1].innerHTML);
+          $('#address').val($row[2].innerHTML);
+          $('#city option:contains(' + $row[3].innerHTML + ')').prop({selected: true})
+          $('#phone').val($row[4].innerHTML);
+          $('#email').val($row[5].innerHTML);
+          $('#contacttype option:contains(' + $row[6].innerHTML + ')').prop({selected: true})
+          $('.modal-header h3').text('Update Customer');
+          $('#submit').text("Update Customer");
+          $('#addModal').modal({show:true}); 
+          $customerid = $extradata[$row[0].parentNode.rowIndex - 1][0];
+          $personid = $extradata[$row[0].parentNode.rowIndex - 1][1];
+        }
 
         $('.reset').click(function() {
-          $('#form')[0].reset();
+          if ($action=="add"){
+            $('#form')[0].reset();
+            $('#message').attr("style","display:none;");
+          }
+          else
+            editset($editrow);
         });
 
         $('#submit').click(function() {
@@ -48,19 +98,32 @@ while ($r = $res->fetch_assoc()) {
             dataType: 'json',
             data:     {
               submit: 'submit',
+              action: $action,
               firstname: $('#firstname').val(),
               lastname: $('#lastname').val(),
               email: $('#email').val(),
               address: $('#address').val(),
               city: $('#city').val(),
               phone: $('#phone').val(),
-              contacttype: $('#contacttype').val()
+              contacttype: $('#contacttype').val(),
+              customerid: $customerid,
+              personid: $personid
             },
             success: function(data) {
               if (data.error == false) {
                 $('#message').text("Customer added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
+                $('#form').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal').modal('toggle');
+                  $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message').attr('style', 'display: none;');
+                }, 2000);
                 $('#form')[0].reset();
                 } else {
                 $('#message').text(data.msg);
@@ -69,6 +132,7 @@ while ($r = $res->fetch_assoc()) {
               }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
               $('#message').text("Error adding customer");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
