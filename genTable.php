@@ -6,7 +6,7 @@ if(isset($_POST['table'])){
   if($_POST['table']=="parts"){
     $res = $db->query("SELECT * FROM parts p");
     while ($r = $res->fetch_assoc()) {
-      if(is_manger()) {
+      if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
         $return['contents'][] = array($r['partid'], $r['cost'], $r['name'], $r['quantity'], $edit);
       }
