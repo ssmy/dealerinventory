@@ -31,11 +31,10 @@ make_head("Parts");
               if (data.error == false) {
                 console.log(data.contents);
                 for (var r = 0; r < data.contents.length; r++) {
-                  $('#table tr:last').after('<tr><td>' + data.contents[r][0] + '</td>'
-                    + '<td>' + data.contents[r][1] + '</td>'
-                    + '<td>' + data.contents[r][2] + '</td>'
-                    + '<td>' + data.contents[r][3] + '</td>'
-                    + '<td>' + data.contents[r][4] + '</td></tr>');
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table tr:last').after('<tr>' + $data + '</tr>');
                 }
               } else {
                 console.log('error loading data');
