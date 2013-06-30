@@ -20,12 +20,14 @@ make_head("Sales");
 <?php
 $res = $db->query("SELECT * FROM vehiclesales p");
 while ($r = $res->fetch_assoc()) {
+  echo "<tr>";
   echo "<td>" . $r["saleid"] . "</td>";
   echo "<td>" . $r["customerid"] . "</td>";
   echo "<td>" . $r["employeeid"] . "</td>";
   echo "<td>" . $r["vehicleid"] . "</td>";
   echo "<td>" . $r["datesold"] . "</td>";
   echo "<td>" . $r["saleprice"] . "</td>";
+  echo "</tr>";
   }
   ?>
     </table>
