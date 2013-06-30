@@ -8,7 +8,7 @@ make_head("Parts");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Parts</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <table id="table" class="table table-striped table-bordered table-hover">
       <tr>
         <th>Part #</th>
         <th>Cost</th>
@@ -16,24 +16,37 @@ make_head("Parts");
         <th>Quantity</th>
 <? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM parts p");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td>" . $r["partid"] . "</td>";
-  echo "<td>" . $r["cost"] . "</td>";
-  echo "<td>" . $r["name"] . "</td>";
-  echo "<td>" . $r["quantity"] . "</td>";
-  if(is_manager()) {
-    echo "<td class=\"edit\"><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
-  }
-  echo "</tr>";
-  }
-  ?>
-    </table>
 <?if(is_manager()){?>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'parts'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                console.log(data.contents);
+                for (var r = 0; r < data.contents.length; r++) {
+                  $('#table tr:last').after('<tr><td>' + data.contents[r][0] + '</td>'
+                    + '<td>' + data.contents[r][1] + '</td>'
+                    + '<td>' + data.contents[r][2] + '</td>'
+                    + '<td>' + data.contents[r][3] + '</td>'
+                    + '<td>' + data.contents[r][4] + '</td></tr>');
+                }
+              } else {
+                console.log('error loading data');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
+            }
+          });
+        }
+        loadData();
         $('#triggerAdd').click(function() {
           $('#form')[0].reset();
           $('#addModal').modal({show:true});
