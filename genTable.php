@@ -21,10 +21,10 @@ if(isset($_POST['table'])){
     while ($r = $res->fetch_assoc()) {
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
-        $return['contents'][] = array($r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"], $edit);
+        $return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"], $edit);
       }
       else{
-        $return['contents'][] = array($r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"]);
+        $return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"]);
       }
     }
     $return['error'] = false;
