@@ -36,6 +36,11 @@ make_head("Parts");
                     $data += '<td>' + data.contents[r][c] + '</td>';
                   $('#table tr:last').after('<tr>' + $data + '</tr>');
                 }
+                $('.edit').click(function(){
+                  editset($(this));
+                  $action = "update";
+                  $editrow=$(this);
+                });
               } else {
                 console.log('error loading data');
               }
@@ -46,11 +51,12 @@ make_head("Parts");
           });
         }
         loadData();
+<?if(!is_manager()) {?>
       });
     </script>
-<?if(is_manager()){?>
     <script>
       $(document).ready(function() {
+<?} else {?>
         $('#triggerAdd').click(function() {
           $('#form')[0].reset();
           $('#addModal').modal({show:true});
@@ -69,12 +75,6 @@ make_head("Parts");
           $('#addModal').modal({show:true}); 
           $partid = $row[0].innerHTML;
         }
-
-        $('.edit').click(function(){
-          editset($(this));
-          $action = "update";
-          $editrow=$(this);
-        });
 
         $('.reset').click(function() {
           if ($action=="add"){
@@ -107,7 +107,9 @@ make_head("Parts");
                 $('#form').attr('style', 'display:none;');
                 $('div.modal-footer').attr('style', 'display:none;');
                 setTimeout(function() {
-                  $('#addModal').modal('toggle')
+                  $('#addModal').modal('toggle');
+                  $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
