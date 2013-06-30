@@ -31,6 +31,7 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
+    <? if (is_manager()) { ?>
     <script>
       $(document).ready(function() {
         $('#triggerAdd').click(function() {
@@ -128,6 +129,7 @@ while ($r = $res->fetch_assoc()) {
         <a id="submit" class="btn btn-primary">Make sale</a>
       </div>
     </div>
+    <? } ?>
     <h1>Part Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
