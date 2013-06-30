@@ -64,6 +64,7 @@ make_head("Parts");
         });
 
         var editrow = null;
+        var $partid = 0;//To fix errors on adding
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
