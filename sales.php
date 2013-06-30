@@ -116,7 +116,7 @@ while ($r = $res->fetch_assoc()) {
 }
 ?>
           </select>
-          <br/>Date sold:<br/>
+          <br/>Date sold: (MM/DD/YYYY)<br/>
           <input id="date" type="date"/>
           <br/>Sale price:<br/>
           <input type="text" id="sale" placeholder="Sale price"/>
