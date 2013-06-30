@@ -8,6 +8,7 @@ make_head("Parts");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Parts</h1>
+    <div id="dataerror" class="alert alert-error" style="display: none;"></div>
     <table id="table" class="table table-striped table-bordered table-hover">
       <tr>
         <th>Part #</th>
@@ -29,7 +30,6 @@ make_head("Parts");
             },
             success: function(data) {
               if (data.error == false) {
-                console.log(data.contents);
                 for (var r = 0; r < data.contents.length; r++) {
                   $data = "";
                   for (var c = 0; c < data.contents[r].length; c++)
@@ -42,11 +42,13 @@ make_head("Parts");
                   $editrow=$(this);
                 });
               } else {
-                console.log('error loading data');
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
               }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-              console.log(XMLHttpRequest);
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
             }
           });
         }
