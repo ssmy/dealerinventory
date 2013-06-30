@@ -111,6 +111,9 @@ make_head("Parts");
                   $('#addModal').modal('toggle');
                   $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
                   loadData();
+                  $('#form').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message').attr('style', 'display: none;');
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
