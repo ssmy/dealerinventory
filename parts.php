@@ -16,7 +16,7 @@ make_head("Parts");
         <th>Quantity</th>
 <? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
-<?if(is_manager()){?>
+    </table>
     <script>
       $(document).ready(function() {
         function loadData() {
@@ -47,6 +47,11 @@ make_head("Parts");
           });
         }
         loadData();
+      });
+    </script>
+<?if(is_manager()){?>
+    <script>
+      $(document).ready(function() {
         $('#triggerAdd').click(function() {
           $('#form')[0].reset();
           $('#addModal').modal({show:true});
