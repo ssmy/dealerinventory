@@ -4,7 +4,9 @@ begin();
 $db = connect_db();
 make_head("Sales");
 ?>
-<html>
+  <script src="datepicker/js/bootstrap-datepicker.js"></script>
+  <link href="datepicker/css/datepicker.css" rel="stylesheet" media="screen" />
+<body>
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Vehicle Sales</h1>
@@ -117,9 +119,11 @@ while ($r = $res->fetch_assoc()) {
 }
 ?>
           </select>
-          <br/>Date sold: (MM/DD/YYYY)<br/>
-          <input id="date" type="date"/>
-          <br/>Sale price:<br/>
+          <br/>Date sold:<br/>
+          <input id="date" type="" data-date-format="mm/dd/yyyy" value="<? echo date('m/d/Y');?>"/>
+          <script>$('#date').datepicker();</script>
+          <br />
+          Sale price:<br/>
           <input type="text" id="sale" placeholder="Sale price"/>
         </form>
       </div>
@@ -144,6 +148,7 @@ while ($r = $res->fetch_assoc()) {
 <?php
 $res = $db->query("SELECT * FROM partsales p");
 while ($r = $res->fetch_assoc()) {
+  echo "<tr>";
   echo "<td>" . $r["saleid"] . "</td>";
   echo "<td>" . $r["customerid"] . "</td>";
   echo "<td>" . $r["employeeid"] . "</td>";
@@ -151,6 +156,7 @@ while ($r = $res->fetch_assoc()) {
   echo "<td>" . $r["datesold"] . "</td>";
   echo "<td>" . $r["saleprice"] . "</td>";
   echo "<td>" . $r["quantity"] . "</td>";
+  echo "</tr>";
   }
   ?>
     </table>
@@ -242,8 +248,9 @@ while ($r = $res->fetch_assoc()) {
 }
 ?>
           </select>
-          <br/>Date sold: (MM/DD/YYYY)<br/>
-          <input id="date2" type="date"/>
+          <br/>Date sold:<br/>
+          <input id="date2" type="text" data-date-value="mm/dd/yyyy" value="<?echo date('m/d/Y')?>"/>
+          <script>$('#date2').datepicker();</script>
           <br/>Quantity:<br/>
           <input type="text" id="quantity2" placeholder="Quantity sold:"/>
           <br/>Sale price (total):<br/>

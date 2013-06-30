@@ -19,3 +19,7 @@ div.navbar {
   border: 1px solid #e5e5e5;
   background-color: #fff;
 }
+
+div.datepicker {
+  z-index:9999;
+}
