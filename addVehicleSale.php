@@ -6,9 +6,9 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
   if ($_POST['date'] != "" && $_POST['price'] != "") {
     if ($_POST['customer'] != 0 && $_POST['employee'] != 0 && $_POST['vehicle']!=0) {
       if($_POST['action']=="add"){
-        $res = mysqli_query($db,'INSERT INTO vehiclesales (customerid, employeeid, vehicleid, datesold, saleprice) VALUES ('.$_POST['customer'].','.$_POST['employee'].','.$_POST['vehicle'].',"'.$_POST['date'].'",'.$_POST['price'].'); UPDATE vehicles SET statusid=2 WHERE vehicleid='.$_POST['vehicle'].';');
+        $res = $db->multi_query('INSERT INTO vehiclesales (customerid, employeeid, vehicleid, datesold, saleprice) VALUES ('.$_POST['customer'].','.$_POST['employee'].','.$_POST['vehicle'].',"'.$_POST['date'].'",'.$_POST['price'].'); UPDATE vehicles SET statusid=2 WHERE vehicleid='.$_POST['vehicle'].';');
       } else {
-        $res = mysqli_query($db,'UPDATE vehicles SET statusid=1 WHERE vehicleid=(SELECT vehicleid FROM vehiclesales WHERE saleid='.$_POST['sale'].'); UPDATE vehiclesales SET customerid='.$_POST['customer'].', employeeid='.$_POST['employee'].', vehicleid='.$_POST['vehicle'].', datesold="'.$_POST['date'].'", saleprice='.$_POST['price'].' WHERE saleid='.$_POST['sale'].'; UPDATE vehicles SET statusid=2 WHERE vehicleid='.$_POST['vehicle'].';');
+        $res = $db->multi_query('UPDATE vehicles SET statusid=1 WHERE vehicleid=(SELECT vehicleid FROM vehiclesales WHERE saleid='.$_POST['sale'].'); UPDATE vehiclesales SET customerid='.$_POST['customer'].', employeeid='.$_POST['employee'].', vehicleid='.$_POST['vehicle'].', datesold="'.$_POST['date'].'", saleprice='.$_POST['price'].' WHERE saleid='.$_POST['sale'].'; UPDATE vehicles SET statusid=2 WHERE vehicleid='.$_POST['vehicle'].';');
       }
       if ($res) {
         $return['error'] = false;

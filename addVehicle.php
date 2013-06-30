@@ -6,9 +6,9 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
   if ($_POST['vin'] != "" && $_POST['year'] != "") {
     if ($_POST['make'] != 0 && $_POST['model'] != 0) {
       if($_POST['action']=="add"){
-        $res = mysqli_query($db,'INSERT INTO vehicles (vin, colorid, modelid, year, statusid, locationid) VALUES ("'.$_POST['vin'].'",'.$_POST['color'].','.$_POST['model'].','.$_POST['year'].','.$_POST['status'].','.$_POST['location'].');');
+        $res = $db->query('INSERT INTO vehicles (vin, colorid, modelid, year, statusid, locationid) VALUES ("'.$_POST['vin'].'",'.$_POST['color'].','.$_POST['model'].','.$_POST['year'].','.$_POST['status'].','.$_POST['location'].');');
       } else {
-        $res = mysqli_query($db,'UPDATE vehicles SET vin="'.$_POST['vin'].'", colorid='.$_POST['color'].', modelid='.$_POST['model'].', year='.$_POST['year'].', statusid='.$_POST['status'].', locationid='.$_POST['location'].' WHERE vehicleid='.$_POST['vehicleid'].';');
+        $res = $db->query('UPDATE vehicles SET vin="'.$_POST['vin'].'", colorid='.$_POST['color'].', modelid='.$_POST['model'].', year='.$_POST['year'].', statusid='.$_POST['status'].', locationid='.$_POST['location'].' WHERE vehicleid='.$_POST['vehicleid'].';');
       }
       if ($res) {
         $return['error'] = false;
@@ -36,17 +36,6 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
         $return['error'] = true;
         $return['msg'] = "Please enter a year";
       }
-  }
-  echo json_encode($return);
-}
-if (isset($_POST['submit']) && $_POST['action']=="delete"){
-  $res = mysqli_query($db,'DELETE FROM vehicles WHERE vehicleid='.$_POST['vehicleid'].');');
-  if ($res) {
-    $return['error'] = false;
-    $return['msg'] = "Vehicle deleted successfully";
-  } else {
-    $return['error'] = true;
-    $return['msg'] = "Error deleting vehicle";
   }
   echo json_encode($return);
 }
