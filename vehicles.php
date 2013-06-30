@@ -17,8 +17,7 @@ make_head("Vehicles");
         <th>Model</th>
         <th>Status</th>
         <th>Location</th>
-        <th>Edit | Delete</th>
-<? // TODO: Add status ?>
+        <?if(is_manager()) echo "<th>Edit</th>";?>
       </tr>
 <?php
 $res = $db->query("SELECT * FROM vehicles v, colors c, models m, makes ma, locations l, cities ci, statuses s WHERE v.colorid=c.colorid AND v.modelid=m.modelid AND m.makeid=ma.makeid AND v.locationid=l.locationid AND l.cityid=ci.cityid AND v.statusid=s.statusid");
@@ -32,8 +31,7 @@ while ($r = $res->fetch_assoc()) {
   echo "<td>" . ucwords(strtolower($r["status"])) . "</td>";
   echo "<td>" . $r["name"] . "</td>";
   if(is_manager()) {
-    echo "<td><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a> | ";
-    echo "<a href=\"#\" class=\"delete\"><i class=\"icon-trash\"></i></a></td>";
+    echo "<td><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
   }
   echo "</tr>";
   }
@@ -48,12 +46,10 @@ while ($r = $res->fetch_assoc()) {
           $action = "add";
         });
 
-        $('.delete').click(function() {
-          alert('delete ' + $(this).closest("tr")[0].rowIndex);
-        });
+        var editrow = null;
 
-        $('.edit').click(function() {
-          $row = $(this).closest("tr")[0].cells;
+        function editset($obj){
+          $row = $obj.closest("tr")[0].cells;
           $('#vin').val($row[0].innerHTML);
           $('#color option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
           $('#make option:contains(' + $row[3].innerHTML + ')').prop({selected: true})
@@ -66,11 +62,19 @@ while ($r = $res->fetch_assoc()) {
           $('#submit').text("Update Vehicle");
           $('#addModal').modal({show:true}); 
           $vehicleid = $row[0].getAttribute('data-vehicleid');
+        }
+
+        $('.edit').click(function(){
+          editset($(this));
           $action = "update";
+          $editrow=$(this);
         });
 
         $('.reset').click(function() {
-          $('#form')[0].reset();
+          if ($action=="add")
+            $('#form')[0].reset();
+          else
+            editset($editrow);
         });
 
         $('#submit').click(function() {
@@ -151,6 +155,7 @@ while ($r = $res->fetch_assoc()) {
               ?>
               var make=$('#make').val();
               $('#modeldiv').attr("style","");
+              document.getElementById('model').length=0;
               createOption(document.getElementById('model'),"Please Select a Model",0);
               for(var i=0;i<makeMapping[make].length;i++){
                 createOption(document.getElementById("model"), makeMapping[make][i][1], makeMapping[make][i][0]);
@@ -199,7 +204,7 @@ while ($r = $res->fetch_assoc()) {
           </form>
       </div> <!-- body -->
       <div class="modal-footer">
-        <a class="btn reset">Reset</a>
+        <a id="reset" class="btn reset">Reset</a>
         <a class="btn reset" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Add Vehicle</a>
       </div>
