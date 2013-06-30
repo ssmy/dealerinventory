@@ -8,7 +8,8 @@ make_head("Vehicles");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Vehicles</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <div id="dataerror" class="alert alert-error" style="display: none;"></div>
+    <table id="table" class="table table-striped table-bordered table-hover">
       <tr>
         <th>VIN</th>
         <th>Year</th>
@@ -19,27 +20,49 @@ make_head("Vehicles");
         <th>Location</th>
         <?if(is_manager()) echo "<th>Edit</th>";?>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM vehicles v, colors c, models m, makes ma, locations l, cities ci, statuses s WHERE v.colorid=c.colorid AND v.modelid=m.modelid AND m.makeid=ma.makeid AND v.locationid=l.locationid AND l.cityid=ci.cityid AND v.statusid=s.statusid");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td data-vehicleid=\"" . $r['vehicleid'] . "\">" . $r["vin"] . "</td>";
-  echo "<td>" . $r["year"] . "</td>";
-  echo "<td>" . $r["color"] . "</td>";
-  echo "<td>" . $r["make"] . "</td>";
-  echo "<td>" . $r["model"] . "</td>";
-  echo "<td>" . ucwords(strtolower($r["status"])) . "</td>";
-  echo "<td>" . $r["name"] . "</td>";
-  if(is_manager()) {
-    echo "<td class=\"edit\"><a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a></td>";
-  }
-  echo "</tr>";
-  }
-  ?>
     </table>
-<?if(is_manager()){?>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'vehicles'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                for (var r = 0; r < data.contents.length; r++) {
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table tr:last').after('<tr>' + $data + '</tr>');
+                }
+                $extradata = data.extra;
+                $('.edit').click(function(){
+                  $action = "update";
+                  editset($(this));
+                  $editrow=$(this);
+                });
+              } else {
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
+            }
+          });
+        }
+        loadData();
+<?if(!is_manager()) {?>
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+<?} else {?>
         $('#triggerAdd').click(function() {
           $('#form')[0].reset();
           $('#addModal').modal({show:true});
@@ -50,6 +73,8 @@ while ($r = $res->fetch_assoc()) {
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
+          $vehicleid = $extradata[$row[0].parentNode.rowIndex - 1][0];
+          console.log($vehicleid);
           $('#vin').val($row[0].innerHTML);
           $('#color option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
           $('#make option:contains(' + $row[3].innerHTML + ')').prop({selected: true})
@@ -61,14 +86,7 @@ while ($r = $res->fetch_assoc()) {
           $('.modal-header h3').text('Update Vehicle');
           $('#submit').text("Update Vehicle");
           $('#addModal').modal({show:true}); 
-          $vehicleid = $row[0].getAttribute('data-vehicleid');
         }
-
-        $('.edit').click(function(){
-          editset($(this));
-          $action = "update";
-          $editrow=$(this);
-        });
 
         $('.reset').click(function() {
           if ($action=="add"){
@@ -98,6 +116,7 @@ while ($r = $res->fetch_assoc()) {
             },
             success: function(data) {
               if (data.error == false) {
+                console.log($vehicleid);
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
@@ -105,6 +124,11 @@ while ($r = $res->fetch_assoc()) {
                 $('div.modal-footer').attr('style', 'display:none;');
                 setTimeout(function() {
                   $('#addModal').modal('toggle')
+                  $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message').attr('style', 'display: none;');
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
