@@ -31,6 +31,15 @@ if(isset($_POST['table'])){
     }
     $return['error'] = false;
   }
+  if($_POST['table']=="customers"){
+    $res = $db->query("SELECT * FROM customers c, people p, cities ci, contacttypes co WHERE p.personid=c.personid AND p.cityid=ci.cityid AND c.contacttype=co.contactid");
+    while ($r = $res->fetch_assoc()) {
+      $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
+      $return['contents'][] = array($r['firstname'], $r['lastname'], $r['address'], $r['city'] . ", " . $r['state'], $r['phone'], $r["email"], $r['contact'], $edit);
+      $return['extra'][] = array($r['customerid'], $r['personid']);
+    }
+    $return['error'] = false;
+  }
   echo json_encode($return);
 }
 ?>
