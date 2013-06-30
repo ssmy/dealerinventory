@@ -22,9 +22,11 @@ if(isset($_POST['table'])){
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
         $return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"], $edit);
+        $return['extra'][] = array($r['vehicleid']);
       }
       else{
         $return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"]);
+        $return['extra'][] = array($r['vehicleid']);
       }
     }
     $return['error'] = false;
