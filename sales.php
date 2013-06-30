@@ -154,5 +154,108 @@ while ($r = $res->fetch_assoc()) {
   }
   ?>
     </table>
+    <? if (is_manager()) { ?>
+    <script>
+      $(document).ready(function() {
+        $('#triggerAdd2').click(function() {
+          $('#addModal2').modal({show:true});
+          $action = "add";
+        });
+
+        function reset() {
+          $('#form2')[0].reset();
+        }
+
+        $('.reset').click(function() {
+          reset();
+        });
+
+        $('#submit2').click(function() {
+          $.ajax({
+            type:     'POST',
+            url:      'addPartSale.php',
+            dataType: 'json',
+            data:     {
+              submit: 'submit',
+              action: $action,
+              customer: $('#customer2').val(),
+              employee: $('#employee2').val(),
+              part: $('#part2').val(),
+              date: $('#date2').val(),
+              quantity: $('#quantity2').val(),
+              price: $('#sale2').val()
+            },
+            success: function(data) {
+              if (data.error == false) {
+                $('#message2').text("Sale added successfully");
+                $('#message2').attr('class', 'alert alert-success');
+                $('#message2').attr('style', '');
+                $('#custform')[0].reset();
+                } else {
+                $('#message2').text(data.msg);
+                $('#message2').attr('class', 'alert alert-error');
+                $('#message2').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
+              $('#message2').text("Error adding sale");
+              $('#message2').attr('class', 'alert alert-error');
+              $('#message2').attr('style', '');
+            }
+          });
+        });
+      });
+    </script>
+    <a id="triggerAdd2" class="btn btn-primary">Add new part sale</a>
+    <div id="addModal2" class="modal hide fade" data-backdrop="static">
+      <div class="modal-header">
+        <h3>Add new part sale</h3>
+      </div>
+      <div class="modal-body">
+        <div id="message2" style="display: none;"></div>
+        <form method="post" id="form2">
+          Customer:<br/>
+          <select id="customer2">
+<?
+$res = $db->query('SELECT * FROM customers c, people p WHERE c.personid=p.personid');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['customerid'] . '">' . $r['firstname'] . " " . $r['lastname'] . '</option>';
+}
+?>
+          </select>
+          <br/>Employee:<br/>
+          <select id="employee2">
+<?
+$res = $db->query('SELECT * FROM employees e, people p WHERE e.personid=p.personid');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['employeeid'] . '">' . $r['firstname'] . " " . $r['lastname'] . '</option>';
+}
+?>
+          </select>
+          <br/>Part #:<br/>
+          <select id="part2">
+<?
+$res = $db->query('SELECT * FROM parts p');
+while ($r = $res->fetch_assoc()) {
+  echo '<option value="' . $r['partid'] . '">' . $r['name'] . '</option>';
+}
+?>
+          </select>
+          <br/>Date sold: (MM/DD/YYYY)<br/>
+          <input id="date2" type="date"/>
+          <br/>Quantity:<br/>
+          <input type="text" id="quantity2" placeholder="Quantity sold:"/>
+          <br/>Sale price (total):<br/>
+          <input type="text" id="sale2" placeholder="Sale price"/>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn reset">Reset</a>
+        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a id="submit2" class="btn btn-primary">Make sale</a>
+      </div>
+    </div>
+    <? } ?>
   </div>
 </html>
