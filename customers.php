@@ -38,7 +38,7 @@ while ($r = $res->fetch_assoc()) {
         });
 
         $('.reset').click(function() {
-          $('#custform')[0].reset();
+          $('#form')[0].reset();
         });
 
         $('#submit').click(function() {
@@ -61,7 +61,7 @@ while ($r = $res->fetch_assoc()) {
                 $('#message').text("Customer added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#custform')[0].reset();
+                $('#form')[0].reset();
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -84,12 +84,12 @@ while ($r = $res->fetch_assoc()) {
       </div>
       <div class="modal-body">
         <div id="message" style="display: none;"></div>
-        <form method="post" id="custform">
+        <form method="post" id="form">
           <input type="hidden" name="submit">
-          <input type="text" id="firstname" <? echo ((isset($_POST['firstname']) && $_POST['firstname'] != "") ? "value=".$_POST['firstname'] : "placeholder=\"First name\""); ?>><br/>
-          <input type="text" id="lastname" <? echo ((isset($_POST['lastname']) && $_POST['lastname'] != "") ? "value=".$_POST['lastname'] : "placeholder=\"Last name\""); ?>><br/>
-          <input type="text" id="email" <? echo ((isset($_POST['email']) && $_POST['email'] != "") ? "value=".$_POST['email'] : "placeholder=\"Email\""); ?>><br/>
-          <input type="text" id="address" <? echo ((isset($_POST['address']) && $_POST['address'] != "") ? "value=".$_POST['address'] : "placeholder=\"Address\""); ?>><br/>
+          <input type="text" id="firstname" placeholder="First name"><br/>
+          <input type="text" id="lastname" placeholder="Last name")><br/>
+          <input type="text" id="email" placeholder="Email"><br/>
+          <input type="text" id="address" placeholder="Address"><br/>
           City:<br />
           <select id="city">
             <?
@@ -99,7 +99,7 @@ while ($r = $res->fetch_assoc()) {
             }
             ?>
           </select><br />
-          <input type="text" id="phone" <? echo ((isset($_POST['phone']) && $_POST['phone'] != "") ? "value=".$_POST['phone'] : "placeholder=\"Phone\""); ?>><br/>
+          <input type="text" id="phone" placeholder="Phone"><br/>
           Contact Type:<br />
           <select id="contacttype">
             <?
