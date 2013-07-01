@@ -3,12 +3,12 @@ include('util.php');
 begin();
 
 $db = connect_db();
-make_head("Admin");
+make_head("Account");
 ?>
   <body>
     <div class="container">
       <? include('navbar.html') ?>
-      <h1>Admin</h1>
+      <h1>Account</h1>
 <?php
 if (isset($_POST['oldpass'])) {
   $res = $db->query('SELECT * FROM employees WHERE employeeid=' . $_SESSION['userid'] . ' AND password="' . sha1($_POST['oldpass']) . '"');
