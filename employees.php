@@ -74,6 +74,9 @@ make_head("Employees");
         });
 
         var editrow = null;
+        $employeeid = 0;
+        $personid = 0;
+        $password=0;
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
