@@ -33,6 +33,7 @@ if (isset($_POST['submit'])) {
           }
           if ($res2) {
             $return['error'] = false;
+            $return['msg'] = ($_POST['action']=="add" ? "Customer created successfully" : "Customer updated successfully");
           } else {
             $return['error'] = true;
             $return['msg'] = $_POST['action'] == "add" ? "Error creating customer" : "Error updating customer";
