@@ -69,10 +69,10 @@ make_head("Vehicle Sales");
         });
 
         var editrow = null;
+        $oldvehicle = 0;
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
-          $('#vehicle option:contains(' + $row[0].innerHTML + ')').prop({selected: true})
           $('#customer option:contains(' + $row[1].innerHTML + ')').prop({selected: true})
           $('#employee option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
           $('#date').val($row[3].innerHTML);
@@ -82,6 +82,8 @@ make_head("Vehicle Sales");
           $('.modal-header h3').text('Update Sale');
           $('#submit').text("Update Sale");
           $('#addModal').modal({show:true}); 
+          $oldvehicle = $extradata[$row[0].parentNode.rowIndex - 1][0];
+          $saleid = $extradata[$row[0].parentNode.rowIndex - 1][1];
         }
 
         $('.reset').click(function() {
@@ -104,6 +106,8 @@ make_head("Vehicle Sales");
               customer: $('#customer').val(),
               employee: $('#employee').val(),
               vehicle: $('#vehicle').val(),
+              oldvehicle: $oldvehicle,
+              sale: $saleid,
               date: $('#date').val(),
               price: $('#sale').val()
             },
