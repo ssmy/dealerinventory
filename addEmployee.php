@@ -30,21 +30,28 @@ if (isset($_POST['submit'])) {
         $return['error'] = true;
         $return['msg'] = "Passwords do not match";
       } else {
-        $res = $db->query('INSERT INTO people (firstname, lastname, email, address, cityid, phone) VALUES ("'.$_POST['firstname'].'","'.$_POST['lastname'].'","'.$_POST['email'].'","'.$_POST['address'].'",'.$_POST['city'].','.$_POST['phone'].');');
+        if($_POST['action']=="add"){
+          $res = $db->query('INSERT INTO people (firstname, lastname, email, address, cityid, phone) VALUES ("'.$_POST['firstname'].'","'.$_POST['lastname'].'","'.$_POST['email'].'","'.$_POST['address'].'",'.$_POST['city'].','.$_POST['phone'].');');
+        } else {
+          $res = $db->query('UPDATE people SET firstname="'.$_POST['firstname'].'", lastname="'.$_POST['lastname'].'", email="'.$_POST['email'].'", address="'.$_POST['address'].'", cityid='.$_POST['city'].', phone="'.$_POST['phone'].'" WHERE personid='.$_POST['personid'].';');
+        }
         if ($res) {
           $personid=$db->insert_id;
-          $res2 = $db->query('INSERT INTO employees (personid, username, password, rankid, statusid) VALUES ('.$personid.',"'.$_POST['user'].'","'.sha1($_POST['pass']).'",'.$_POST['rank'].','.$basestatus.');');
-          $_POST['firstname']="";
-          $_POST['lastname']="";
-          $_POST['email']="";
-          $_POST['address']="";
-          $_POST['phone']="";
-          $_POST['user']="";
+          if($_POST['action']=="add"){
+            $res2 = $db->query('INSERT INTO employees (personid, username, password, rankid, statusid) VALUES ('.$personid.',"'.$_POST['user'].'","'.sha1($_POST['pass']).'",'.$_POST['rank'].','.$basestatus.');');
+          } else {
+            if ($_POST['oldpass'] != $_POST['pass'])
+              $password = sha1($_POST['pass']);
+            else
+              $password = $_POST['oldpass'];
+            $res2 = $db->query('UPDATE employees SET username="' . $_POST['user'] . '", rankid=' . $_POST['rank'] . ', statusid=' . $_POST['status'] . ', password="' . $password . '" WHERE employeeid=' . $_POST['employeeid'] . ';');
+          }
           if ($res2) {
             $return['error'] = false;
           } else {
             $return['error'] = true;
             $return['msg'] = "Error creating employee";
+            $return['msg'] = $db->error;
           }  
         } else {
           $return['error'] = true;
