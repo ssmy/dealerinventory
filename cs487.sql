@@ -107,11 +107,10 @@ CREATE TABLE IF NOT EXISTS `customers` (
 --
 
 INSERT INTO `customers` (`customerid`, `personid`, `contacttype`) VALUES
-(1, 1, 1),
-(2, 5, 1),
-(3, 6, 2),
-(4, 7, 1),
-(5, 8, 2);
+(1, 5, 1),
+(2, 6, 2),
+(3, 7, 1),
+(4, 8, 2);
 
 
 -- --------------------------------------------------------
@@ -135,13 +134,13 @@ CREATE TABLE IF NOT EXISTS `employees` (
 --
 
 INSERT INTO `employees` (`employeeid`, `personid`, `username`, `password`, `rankid`, `statusid`) VALUES
-(1, 1, 'danemp', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 2, 1),
+(1, 9, 'danemp', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 2, 1),
 (2, 1, 'danman', '2591e5f46f28d303f9dc027d475a5c60d8dea17a', 1, 1),
-(3, 2, 'ronemp', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1),
+(3, 10, 'ronemp', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 2, 1),
 (4, 2, 'ronman', 'b937b287f61b7a223d4aac55072db1a5381d3bb3', 1, 1),
-(5, 3, 'tonyemp', '1001e8702733cced254345e193c88aaa47a4f5de', 2, 1),
+(5, 11, 'tonyemp', '1001e8702733cced254345e193c88aaa47a4f5de', 2, 1),
 (6, 3, 'tonyman', '1001e8702733cced254345e193c88aaa47a4f5de', 1, 1),
-(7, 4, 'joshemp', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 2, 1),
+(7, 12, 'joshemp', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 2, 1),
 (8, 4, 'joshman', 'c028c213ed5efcf30c3f4fc7361dbde0c893c5b7', 1, 1);
 -- --------------------------------------------------------
 
@@ -268,6 +267,12 @@ CREATE TABLE IF NOT EXISTS `partsales` (
   PRIMARY KEY (`saleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
+INSERT INTO `partsales` (`salesid`, `customerid`, `employeeid`, `partid`, `datesold`, `saleprice`, `quantity`) VALUES 
+(1, 4, 3, 4, '2006/05/26', 29.99, 1),
+(2, 3, 8, 8, '2008/01/01', 40.00, 2),
+(3, 2, 2, 2, '2011/09/18', 39.98, 2),
+(4, 1, 1, 9, '2012/04/14', 149.50,50);
 -- --------------------------------------------------------
 
 --
@@ -297,8 +302,11 @@ INSERT INTO `people` (`personid`, `firstname`, `lastname`, `email`, `address`, `
 (5, 'Ron', 'Burgundy', 'gwamm@thethunder.com', 'First Best Street', 2, 6194685683),
 (6, 'James', 'May', 'ohbollocks@godsavethequeen.eu', 'Capt Slow Ln', 3, 3922182854),
 (7, 'Techno', 'Love', 'wubwub@dropthebass.com', 'Loosey Goosey Lane', 4, 2938182882),
-(8, 'Susan', 'Boyle', 'idreamadream@daysgoneby.uk', 'Good Lungs Ave', 6, 9293828182);
-
+(8, 'Susan', 'Boyle', 'idreamadream@daysgoneby.uk', 'Good Lungs Ave', 6, 9293828182),
+(9, 'James', 'Hodge', 'wethepeople@pks.com', '3105 Larkhogan St', 5, 8122939192),
+(10, 'Al', 'Bino', 'pale@beautifulpeople.org', '12 East West North Blvd', 3, 1829340231),
+(11, 'Marshall', 'Law', 'nogutsnoglory@ww3.net', '1 Liberty St', 6, 8482930212),
+(12, 'Tommy', 'Gunn', 'warriors@comeoutandplay.gov', '204 West Jamestown', 4, 1922842932);
 -- --------------------------------------------------------
 
 --
@@ -402,6 +410,7 @@ INSERT INTO `vehicles` (`vin`, `vehicleid`, `colorid`, `modelid`, `year`, `statu
 CREATE TABLE IF NOT EXISTS `vehiclesales` (
   `saleid` int(11) NOT NULL AUTO_INCREMENT,
   `customerid` int(11) NOT NULL,
+(1, 1, 1),
   `employeeid` int(11) NOT NULL,
   `vehicleid` int(11) NOT NULL,
   `datesold` date NOT NULL,
@@ -409,6 +418,11 @@ CREATE TABLE IF NOT EXISTS `vehiclesales` (
   PRIMARY KEY (`saleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+INSERT INTO `vehiclesales` (`salesid`, `customerid`, `employeeid`, `vehicleid`, `datesold`, `saleprice`) VALUES 
+--datesale mm/dd/yyyy
+(1, 1, 8, 1, '2005/05/26', 7500), 
+(2, 2, 5, 5, '2009/02/14', 12000),
+(3, 3, 4, 7, '2013/11/04', 32000);
 -- --------------------------------------------------------
 
 --
