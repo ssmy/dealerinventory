@@ -9,9 +9,11 @@ if(isset($_POST['table'])){
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
         $return['contents'][] = array($r['name'], $r['cost'], $r['quantity'], $edit);
+        $return['extra'][] = array($r['partid']);
       }
       else{
         $return['contents'][] = array($r['name'], $r['cost'], $r['quantity']);
+        $return['extra'][] = array($r['partid']);
       }
     }
     $return['error'] = false;
