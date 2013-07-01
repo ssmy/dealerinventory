@@ -9,6 +9,18 @@ $db = connect_db();
 if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
   if ($_POST['vin'] != "" && $_POST['year'] != "") {
     if ($_POST['make'] != 0 && $_POST['model'] != 0) {
+      if (!(preg_match('/[a-zA-Z0-9]{17}/',$_POST['vin']))){
+        $return['error'] = true;
+        $return['msg'] = "VIN must be 17 digits";
+        echo json_encode($return);
+        die();
+      }
+      if (($_POST['year']>(date('Y')+1))||($_POST['year']<1850)){
+        $return['error'] = true;
+        $return['msg'] = "Year must be valid";
+        echo json_encode($return);
+        die();
+      }
       if($_POST['action']=="add"){
         $res = $db->query('INSERT INTO vehicles (vin, colorid, modelid, year, statusid, locationid) VALUES ("'.$_POST['vin'].'",'.$_POST['color'].','.$_POST['model'].','.$_POST['year'].','.$_POST['status'].','.$_POST['location'].');');
       } else {
@@ -22,13 +34,13 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
         $return['msg'] = ($_POST['action']=="add" ? "Error creating vehicle" : "Error updating vehicle");
       }
     } else {//make or model not set
-      if ($_POST['make']==0){
-        $return['error'] = true;
-        $return['msg'] = "Please enter a make";
-      }
       if ($_POST['model']==0){
         $return['error'] = true;
         $return['msg'] = "Please enter a model";
+      }
+      if ($_POST['make']==0){
+        $return['error'] = true;
+        $return['msg'] = "Please enter a make";
       }
     }
   } else {//vin or year not set
