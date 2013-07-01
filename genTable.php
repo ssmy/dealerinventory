@@ -74,9 +74,11 @@ if(isset($_POST['table'])){
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
         $return['contents'][] = array($r['year'].' '.$r['make'].' '.$r['model'], $r[16].' '.$r[17], $r[23].' '.$r[24], $r['datesold'], $r['saleprice'], $edit);
+        $return['extra'][] = array($r['vehicleid'], $r['saleid']);
       }
       else{
         $return['contents'][] = array($r['year'].' '.$r['make'].' '.$r['model'], $r[16].' '.$r[17], $r[23].' '.$r[24], $r['datesold'], $r['saleprice']);
+        $return['extra'][] = array($r['vehicleid'], $r['saleid']);
       }
     }
     $return['error'] = false;
