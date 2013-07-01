@@ -25,7 +25,7 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
           echo json_encode($return);
           die();
         } else {
-          $res = $db->multi_query('UPDATE parts SET quantity=quantity+(SELECT quantity FROM partsales WHERE saleid='.$_POST['sale'].') WHERE partid=(SELECT partid FROM partsales WHERE saleid='.$_POST['sale'].'); UPDATE partsales SET customerid='.$_POST['customer'].', employeeid='.$_POST['employee'].', vehicleid='.$_POST['vehicle'].', datesold="'.$_POST['date'].'", saleprice='.$_POST['price'].', quantity='.$_POST['quantity'].' WHERE saleid='.$_POST['sale'].'; UPDATE parts SET quantity=quantity-'.$_POST['quantity'].' WHERE partid='.$_POST['part'].';');
+          $res = $db->multi_query('UPDATE parts SET quantity=quantity+(SELECT quantity FROM partsales WHERE saleid='.$_POST['sale'].') WHERE partid=(SELECT partid FROM partsales WHERE saleid='.$_POST['sale'].'); UPDATE partsales SET customerid='.$_POST['customer'].', employeeid='.$_POST['employee'].', partid='.$_POST['part'].', datesold="'.$_POST['date'].'", saleprice='.$_POST['price'].', quantity='.$_POST['quantity'].' WHERE saleid='.$_POST['sale'].'; UPDATE parts SET quantity=quantity-'.$_POST['quantity'].' WHERE partid='.$_POST['part'].';');
         }
       }
       if ($res) {
