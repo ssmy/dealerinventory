@@ -64,6 +64,19 @@ if(isset($_POST['table'])){
     }
     $return['error'] = false;
   }
+  if($_POST['table']=="vehiclesales"){//format: vehicle, customer, employee, date, price, edit
+    $res = $db->query("SELECT * FROM vehiclesales vs, customers c, employees e, people p, people p2, vehicles v, models m, makes ma WHERE vs.customerid=c.customerid AND vs.employeeid=e.employeeid AND vs.vehicleid=v.vehicleid AND c.personid=p.personid AND e.personid=p2.personid AND v.modelid=m.modelid AND m.makeid=ma.makeid");
+    while ($r = $res->fetch_array()) {
+      if(is_manager()) {
+        $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
+        $return['contents'][] = array($r['year'].' '.$r['make'].' '.$r['model'], $r[16].' '.$r[17], $r[23].' '.$r[24], $r['datesold'], $r['saleprice'], $edit);
+      }
+      else{
+        $return['contents'][] = array($r['year'].' '.$r['make'].' '.$r['model'], $r[16].' '.$r[17], $r[23].' '.$r[24], $r['datesold'], $r['saleprice']);
+      }
+    }
+    $return['error'] = false;
+  }
 
   echo json_encode($return);
 }
