@@ -41,6 +41,7 @@ make_head("Vehicle Sales");
                 }
                 $extradata = data.extra;
                 $('.edit').click(function(){
+                  $('#vehicle option[value=0]').remove();
                   $editrow=$(this);
                   editset($(this));
                   $action = "update";
@@ -64,6 +65,7 @@ make_head("Vehicle Sales");
       $(document).ready(function() {
 <?} else {?>
         $('#triggerAdd').click(function() {
+          $('#vehicle option[value=0]').remove();
           $('#addModal').modal({show:true});
           $action = "add";
         });
@@ -126,6 +128,7 @@ make_head("Vehicle Sales");
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
+                  $('#vehicle option[value=0]').remove();
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
