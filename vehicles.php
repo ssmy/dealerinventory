@@ -89,6 +89,12 @@ make_head("Vehicles");
           $('#addModal').modal({show:true}); 
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new vehicle');
+          $('#submit').text("Add Vehicle");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -98,6 +104,11 @@ make_head("Vehicles");
             editset($editrow);
         });
 
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
+        });
+        
         $('#submit').click(function() {
           $.ajax({
             type:     'POST',
@@ -130,6 +141,7 @@ make_head("Vehicles");
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
+                  reset();
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
@@ -232,7 +244,7 @@ make_head("Vehicles");
       </div> <!-- body -->
       <div class="modal-footer">
         <a id="reset" class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn closer" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Add Vehicle</a>
       </div>
     </div>
