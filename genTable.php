@@ -52,7 +52,7 @@ if(isset($_POST['table'])){
     }
   }
   if($_POST['table']=="partsales"){
-    $res = $db->query("SELECT * FROM partsales ps, customers c, employees e, people p, parts pt WHERE ps.customerid=c.customerid AND ps.employeeid=e.employeeid AND ps.partid=pt.partid AND c.personid=p.personid AND e.personid=p.personid");
+    $res = $db->query("SELECT * FROM partsales ps, customers c, employees e, people p, people p2, parts pt WHERE ps.customerid=c.customerid AND ps.employeeid=e.employeeid AND ps.partid=pt.partid AND c.personid=p.personid AND e.personid=p2.personid");
     while ($r = $res->fetch_array()) {
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
