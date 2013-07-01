@@ -87,6 +87,12 @@ make_head("Part Sales");
           $saleid = $extradata[$row[0].parentNode.rowIndex - 1][0];
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new part sale');
+          $('#submit').text("Make sale");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -94,6 +100,11 @@ make_head("Part Sales");
           }
           else
             editset($editrow);
+        });
+
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
         });
 
         $('#submit').click(function() {
@@ -127,6 +138,7 @@ make_head("Part Sales");
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
+                  reset();
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
@@ -193,7 +205,7 @@ while ($r = $res->fetch_assoc()) {
       </div>
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn closer" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Make sale</a>
       </div>
     </div>
