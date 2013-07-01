@@ -56,10 +56,10 @@ if(isset($_POST['table'])){
     while ($r = $res->fetch_array()) {
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
-        $return['contents'][] = array($r['name'], $r[17].' '.$r[18], $r[24].' '.$r[25], $r['datesold'], '$'.money_format("%i",$r['saleprice']), $r['quantity'], $edit);
+        $return['contents'][] = array($r['name'], $r[17].' '.$r[18], $r[24].' '.$r[25], $r['datesold'], money_format("%i",$r['saleprice']), $r['quantity'], $edit);
       }
       else{
-        $return['contents'][] = array($r['name'], $r[17].' '.$r[18], $r[24].' '.$r[25], $r['datesold'], '$'.money_format("%i",$r['saleprice']), $r['quantity']);
+        $return['contents'][] = array($r['name'], $r[17].' '.$r[18], $r[24].' '.$r[25], $r['datesold'], money_format("%i",$r['saleprice']), $r['quantity']);
       }
     }
     $return['error'] = false;

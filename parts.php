@@ -143,7 +143,10 @@ make_head("Parts");
         <form method="post" id="form">
           <input type="text" id="name" placeholder="Part name"><br/>
           <input type="text" id="quantity" placeholder="Part quantity"><br/>
-          <input type="text" id="cost" placeholder="Part cost"><br/>
+          <div class="input-prepend">
+            <span class="add-on">$</span>
+            <input class="span2" type="text" id="cost" placeholder="Part cost">
+          </div><br/>
         </form>
       </div>
       <div class="modal-footer">
