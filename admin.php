@@ -2,6 +2,7 @@
 include('util.php');
 begin();
 
+$db = connect_db();
 make_head("Admin");
 ?>
   <body>
@@ -10,7 +11,6 @@ make_head("Admin");
       <h1>Admin</h1>
 <?php
 if (isset($_POST['oldpass'])) {
-  $db = connect_db();
   $res = $db->query('SELECT * FROM employees WHERE employeeid=' . $_SESSION['userid'] . ' AND password="' . sha1($_POST['oldpass']) . '"');
   if ($res->num_rows) {
     if ($_POST['newpass1'] == $_POST['newpass2']) {
@@ -31,7 +31,12 @@ if (isset($_POST['oldpass'])) {
     echo '<div class="alert alert-error">Incorrect password</div>';
   }
 }
+$res = $db->query('SELECT username, rank FROM employees e, ranks r WHERE e.rankid=r.rankid AND employeeid=' . $_SESSION['userid']);
+$acc = $res->fetch_row();
 ?>
+      <h2>Account Information</h2>
+      <p class="lead">Username: <?=$acc[0]?></p>
+      <p class="lead">Rank: <?=ucwords(strtolower($acc[1]))?></p>
       <h2>Change Password</h2>
       <form method="post" action="admin.php">
         <input type="password" name="oldpass" placeholder="Old password"><br/>
