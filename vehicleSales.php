@@ -75,7 +75,7 @@ make_head("Vehicle Sales");
           $('#vehicle option:contains(' + $row[0].innerHTML + ')').prop({selected: true})
           $('#customer option:contains(' + $row[1].innerHTML + ')').prop({selected: true})
           $('#employee option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
-          $('#datesold').val($row[3].innerHTML);
+          $('#date').val($row[3].innerHTML);
           $('#sale').val($row[4].innerHTML);
           $('#vehicle').prepend($('<option>', {value: 0}).text('No change'));
           $('#vehicle')[0].selectedIndex = 0;
