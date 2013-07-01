@@ -2,7 +2,7 @@
 include('util.php');
 begin();
 $db = connect_db();
-make_head("Sales");
+make_head("Vehicle Sales");
 ?>
   <script src="datepicker/js/bootstrap-datepicker.js"></script>
   <link href="datepicker/css/datepicker.css" rel="stylesheet" media="screen" />
@@ -112,12 +112,12 @@ make_head("Sales");
                 $('#message').text("Sale added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#form1')[0].reset();
-                $('#form1').attr('style', 'display:none;');
+                $('#form')[0].reset();
+                $('#form').attr('style', 'display:none;');
                 $('div.modal-footer').attr('style', 'display:none;');
                 setTimeout(function() {
                   $('#addModal').modal('toggle');
-                  $('#table1 tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
                   loadData();
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');

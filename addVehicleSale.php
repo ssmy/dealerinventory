@@ -1,9 +1,9 @@
 <?php
 include('util.php');
-if (!is_manager()) {
-  header('Location: sales.php');
+/*if (!is_manager()) {
+  header('Location: vehicleSales.php');
   die();
-}
+}*/
 begin();
 $db = connect_db();
 if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
