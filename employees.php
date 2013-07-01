@@ -100,6 +100,12 @@ make_head("Employees");
           $('#duppass').val($password);
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new employee');
+          $('#submit').text("Add employee");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -107,6 +113,11 @@ make_head("Employees");
           }
           else
             editset($editrow);
+        });
+
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
         });
 
         $('#submit').click(function() {
@@ -147,6 +158,7 @@ make_head("Employees");
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
+                  reset();
                 }, 2000);
                 $('#form')[0].reset();
                 } else {
