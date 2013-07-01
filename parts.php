@@ -79,6 +79,12 @@ make_head("Parts");
           $partid = $extradata[$row[0].parentNode.rowIndex - 1][0];
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new part');
+          $('#submit').text("Add Part");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -86,6 +92,11 @@ make_head("Parts");
           }
           else
             editset($editrow);
+        });
+
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
         });
 
         $('#submit').click(function() {
@@ -151,7 +162,7 @@ make_head("Parts");
       </div>
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn closer" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Add Part</a>
       </div>
         <?}?>
