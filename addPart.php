@@ -32,10 +32,10 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
       echo json_encode($return);
       die();
     }
-    if($_post['action']=="add"){
-      $res = $db->query('insert into parts (cost, quantity, name) values ('.$_post['cost'].','.$_post['quantity'].',"'.$_post['name'].'");');
+    if($_POST['action']=="add"){
+      $res = $db->query('insert into parts (cost, quantity, name) values ('.$_POST['cost'].','.$_POST['quantity'].',"'.$_POST['name'].'");');
     } else {
-      $res = $db->query('update parts set cost='.$_post['cost'].', quantity='.$_post['quantity'].', name="'.$_post['name'].'" where partid='.$_post['partid'].';');
+      $res = $db->query('update parts set cost='.$_POST['cost'].', quantity='.$_POST['quantity'].', name="'.$_POST['name'].'" where partid='.$_POST['partid'].';');
     }
     if ($res) {
       $return['error'] = false;

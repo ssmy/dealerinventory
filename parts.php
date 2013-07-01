@@ -35,6 +35,7 @@ make_head("Parts");
                     $data += '<td>' + data.contents[r][c] + '</td>';
                   $('#table tr:last').after('<tr>' + $data + '</tr>');
                 }
+                $extradata = data.extra;
                 $('.edit').click(function(){
                   editset($(this));
                   $action = "update";
@@ -69,13 +70,13 @@ make_head("Parts");
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
-          $('#name').val($row[2].innerHTML);
+          $('#name').val($row[0].innerHTML);
           $('#cost').val($row[1].innerHTML);
-          $('#quantity').val($row[3].innerHTML);
+          $('#quantity').val($row[2].innerHTML);
           $('.modal-header h3').text('Update Part');
           $('#submit').text("Update Part");
           $('#addModal').modal({show:true}); 
-          $partid = $row[0].innerHTML;
+          $partid = $extradata[$row[0].parentNode.rowIndex - 1][0];
         }
 
         $('.reset').click(function() {
