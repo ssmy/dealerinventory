@@ -88,6 +88,12 @@ make_head("Vehicle Sales");
           $saleid = $extradata[$row[0].parentNode.rowIndex - 1][1];
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new vehicle sale');
+          $('#submit').text("Make sale");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -95,6 +101,11 @@ make_head("Vehicle Sales");
           }
           else
             editset($editrow);
+        });
+
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
         });
 
         $('#submit').click(function() {
@@ -129,6 +140,7 @@ make_head("Vehicle Sales");
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
                   $('#vehicle option[value=0]').remove();
+                  reset();
                 }, 2000);
                 } else {
                 $('#message').text(data.msg);
@@ -182,7 +194,7 @@ while ($r = $res->fetch_assoc()) {
 ?>
           </select>
           <br/>Date sold:<br/>
-          <input id="date" type="text" data-date-format="yyyy-mm-dd" value="<? echo date('Y-d-m');?>"/>
+          <input id="date" type="text" data-date-format="yyyy-mm-dd" value="<? echo date('Y-m-d');?>"/>
           <script>$('#date').datepicker();</script>
           <br />
           Sale price:<br/>
@@ -194,7 +206,7 @@ while ($r = $res->fetch_assoc()) {
       </div>
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn closer" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Make sale</a>
       </div>
     </div>
