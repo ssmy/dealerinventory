@@ -84,6 +84,12 @@ make_head("Customers");
           $personid = $extradata[$row[0].parentNode.rowIndex - 1][1];
         }
 
+        function reset() {
+          $('.modal-header h3').text('Add new customer');
+          $('#submit').text("Add Customer");
+          $('#message').attr("style","display:none;");
+        }
+
         $('.reset').click(function() {
           $('#message').attr("style","display:none;");
           if ($action=="add"){
@@ -91,6 +97,11 @@ make_head("Customers");
           }
           else
             editset($editrow);
+        });
+
+        $('.closer').click(function() {
+          $('#form')[0].reset();
+          reset();
         });
 
         $('#submit').click(function() {
@@ -113,7 +124,7 @@ make_head("Customers");
             },
             success: function(data) {
               if (data.error == false) {
-                $('#message').text("Customer added successfully");
+                $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
                 $('#form').attr('style', 'display:none;');
@@ -121,10 +132,11 @@ make_head("Customers");
                 setTimeout(function() {
                   $('#addModal').modal('toggle');
                   $('#table tr').not(function(){if ($(this).has('th').length){return true}}).remove();
-                  loadData();
                   $('#form').attr('style', '');
                   $('div.modal-footer').attr('style', '');
                   $('#message').attr('style', 'display: none;');
+                  loadData();
+                  reset();
                 }, 2000);
                 $('#form')[0].reset();
                 } else {
@@ -135,7 +147,7 @@ make_head("Customers");
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
               console.log(XMLHttpRequest);
-              $('#message').text("Error adding customer");
+              $('#message').text("Error modifying customer");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
             }
@@ -179,7 +191,7 @@ make_head("Customers");
       </div> <!-- body -->
       <div class="modal-footer">
         <a class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn closer" data-dismiss="modal">Close</a>
         <a id="submit" class="btn btn-primary">Add Customer</a>
       </div>
     </div>
