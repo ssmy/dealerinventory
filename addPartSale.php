@@ -5,6 +5,30 @@ $db = connect_db();
 if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
   if ($_POST['date'] != "" && $_POST['price'] != "" && $_POST['quantity'] != "") {
     if ($_POST['customer'] != 0 && $_POST['employee'] != 0 && $_POST['part']!=0) {
+      if (!(is_numeric($_POST['quantity']))){
+        $return['error'] = true;
+        $return['msg'] = "Quantity must be an integer";
+        echo json_encode($return);
+        die();
+      }
+      if($_POST['quantity']<1){
+        $return['error'] = true;
+        $return['msg'] = "Quantity must be 1 or greater";
+        echo json_encode($return);
+        die();
+      }
+      if (!(is_numeric($_POST['price']))){
+        $return['error'] = true;
+        $return['msg'] = "Price must be numeric";
+        echo json_encode($return);
+        die();
+      }
+      if($_POST['price']<(.01)){
+        $return['error'] = true;
+        $return['msg'] = "Price must be $0.01 or greater";
+        echo json_encode($return);
+        die();
+      }
       if($_POST['action']=="add"){
         $partres = $db->query('SELECT quantity FROM parts WHERE partid='.$_POST['part'].';');
         $partquan = $partres->fetch_row();

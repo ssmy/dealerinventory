@@ -9,6 +9,18 @@ $db = connect_db();
 if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="update")) {
   if ($_POST['date'] != "" && $_POST['price'] != "") {
     if ($_POST['customer'] != 0 && $_POST['employee'] != 0) {
+      if (!(is_numeric($_POST['price']))){
+        $return['error'] = true;
+        $return['msg'] = "Price must be numeric";
+        echo json_encode($return);
+        die();
+      }
+      if($_POST['price']<(.01)){
+        $return['error'] = true;
+        $return['msg'] = "Price must be $0.01 or greater";
+        echo json_encode($return);
+        die();
+      }
       if($_POST['action']=="add"){
         $res = $db->multi_query('INSERT INTO vehiclesales (customerid, employeeid, vehicleid, datesold, saleprice) VALUES ('.$_POST['customer'].','.$_POST['employee'].','.$_POST['vehicle'].',"'.$_POST['date'].'",'.$_POST['price'].'); UPDATE vehicles SET statusid=2 WHERE vehicleid='.$_POST['vehicle'].';');
       } else {

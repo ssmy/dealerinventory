@@ -72,6 +72,7 @@ make_head("Vehicle Sales");
 
         var editrow = null;
         $oldvehicle = 0;
+        $saleid = 0;
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
