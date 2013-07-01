@@ -65,6 +65,8 @@ make_head("Customers");
         });
         
         var editrow = null;
+        $customerid = 0;
+        $personid = 0;
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
