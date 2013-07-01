@@ -180,7 +180,7 @@ while ($r = $res->fetch_assoc()) {
 ?>
           </select>
           <br/>Date sold:<br/>
-          <input id="date" type="text" data-date-value="mm/dd/yyyy" value="<?echo date('m/d/Y')?>"/>
+          <input id="date" type="text" data-date-format="yyyy-mm-dd" value="<?echo date('Y-m-d')?>"/>
           <script>$('#date').datepicker();</script>
           <br/>Quantity:<br/>
           <input type="text" id="quantity" placeholder="Quantity sold:"/>
