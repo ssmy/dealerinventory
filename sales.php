@@ -12,10 +12,10 @@ make_head("Sales");
     <h1>Vehicle Sales</h1>
     <table class="table table-striped table-bordered table-hover">
       <tr>
-        <th>Sale #</th>
-        <th>Customer #</th>
-        <th>Employee #</th>
-        <th>Vehicle #</th>
+        <th>Sale</th>
+        <th>Customer</th>
+        <th>Employee</th>
+        <th>Vehicle</th>
         <th>Date Sold</th>
         <th>Sale Price</th>
       </tr>
@@ -124,7 +124,10 @@ while ($r = $res->fetch_assoc()) {
           <script>$('#date').datepicker();</script>
           <br />
           Sale price:<br/>
-          <input type="text" id="sale" placeholder="Sale price"/>
+          <div class="input-prepend">
+            <span class="add-on">$</span>
+            <input class="span2" type="text" id="sale" placeholder="Sale price"/>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -140,7 +143,7 @@ while ($r = $res->fetch_assoc()) {
       <tr>
         <th>Part</th>
         <th>Customer</th>
-        <th>Employee#</th>
+        <th>Employee</th>
         <th>Date Sold</th>
         <th>Sale Price</th>
         <th>Quantity</th>
@@ -281,7 +284,10 @@ while ($r = $res->fetch_assoc()) {
           <br/>Quantity:<br/>
           <input type="text" id="quantity2" placeholder="Quantity sold:"/>
           <br/>Sale price (total):<br/>
-          <input type="text" id="sale2" placeholder="Sale price"/>
+          <div class="input-prepend">
+            <span class="add-on">$</span>
+            <input class="span2" type="text" id="sale2" placeholder="Sale price"/>
+          </div>
         </form>
       </div>
       <div class="modal-footer">

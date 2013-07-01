@@ -268,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `partsales` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
-INSERT INTO `partsales` (`salesid`, `customerid`, `employeeid`, `partid`, `datesold`, `saleprice`, `quantity`) VALUES 
+INSERT INTO `partsales` (`saleid`, `customerid`, `employeeid`, `partid`, `datesold`, `saleprice`, `quantity`) VALUES 
 (1, 4, 3, 4, '2006/05/26', 29.99, 1),
 (2, 3, 8, 8, '2008/01/01', 40.00, 2),
 (3, 2, 2, 2, '2011/09/18', 39.98, 2),
@@ -410,7 +410,6 @@ INSERT INTO `vehicles` (`vin`, `vehicleid`, `colorid`, `modelid`, `year`, `statu
 CREATE TABLE IF NOT EXISTS `vehiclesales` (
   `saleid` int(11) NOT NULL AUTO_INCREMENT,
   `customerid` int(11) NOT NULL,
-(1, 1, 1),
   `employeeid` int(11) NOT NULL,
   `vehicleid` int(11) NOT NULL,
   `datesold` date NOT NULL,
@@ -418,11 +417,10 @@ CREATE TABLE IF NOT EXISTS `vehiclesales` (
   PRIMARY KEY (`saleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-INSERT INTO `vehiclesales` (`salesid`, `customerid`, `employeeid`, `vehicleid`, `datesold`, `saleprice`) VALUES 
---datesale mm/dd/yyyy
-(1, 1, 8, 1, '2005/05/26', 7500), 
-(2, 2, 5, 5, '2009/02/14', 12000),
-(3, 3, 4, 7, '2013/11/04', 32000);
+INSERT INTO `vehiclesales` (`saleid`, `customerid`, `employeeid`, `vehicleid`, `datesold`, `saleprice`) VALUES 
+(1, 1, 8, 1, '2005-05-26', 7500), 
+(2, 2, 5, 5, '2009-02-14', 12000),
+(3, 3, 4, 7, '2013-11-04', 32000);
 -- --------------------------------------------------------
 
 --
