@@ -70,6 +70,7 @@ make_head("Vehicles");
         });
 
         var editrow = null;
+        $vehicleid = 0;
 
         function editset($obj){
           $row = $obj.closest("tr")[0].cells;
