@@ -51,6 +51,24 @@ if(isset($_POST['table'])){
       $return['error'] = false;
     }
   }
+  if($_POST['table']=="partsales"){
+    $res = $db->query("SELECT * FROM partsales ps, customers c, employees e, people p, parts pt WHERE ps.customerid=c.customerid AND ps.employeeid=e.employeeid AND ps.partid=pt.partid AND c.personid=p.personid AND e.personid=p.personid");
+    while ($r = $res->fetch_array()) {
+      if(is_manager()) {
+        $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
+        //$return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"], $edit);
+        //$return['extra'][] = array($r['vehicleid']);
+        $return['extra']=print_r($r);
+      }
+      else{
+        //$return['contents'][] = array($r['vin'], $r['year'], $r['color'], $r['make'], $r['model'], ucwords(strtolower($r["status"])), $r["name"]);
+        //$return['extra'][] = array($r['vehicleid']);
+        $return['extra']=print_r($r);
+      }
+    }
+    $return['error'] = false;
+  }
+
   echo json_encode($return);
 }
 ?>
