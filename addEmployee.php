@@ -30,6 +30,12 @@ if (isset($_POST['submit'])) {
         $return['error'] = true;
         $return['msg'] = "Passwords do not match";
       } else {
+        if (!(preg_match('/[0-9]{10}/',$_POST['phone']))){
+          $return['error'] = true;
+          $return['msg'] = "Phone number must be 10 digits";
+          echo json_encode($return);
+          die();
+        }
         if($_POST['action']=="add"){
           $res = $db->query('INSERT INTO people (firstname, lastname, email, address, cityid, phone) VALUES ("'.$_POST['firstname'].'","'.$_POST['lastname'].'","'.$_POST['email'].'","'.$_POST['address'].'",'.$_POST['city'].','.$_POST['phone'].');');
         } else {
