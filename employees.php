@@ -98,9 +98,9 @@ make_head("Employees");
         }
 
         $('.reset').click(function() {
+          $('#message').attr("style","display:none;");
           if ($action=="add"){
             $('#form')[0].reset();
-            $('#message').attr("style","display:none;");
           }
           else
             editset($editrow);
