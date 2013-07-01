@@ -41,13 +41,15 @@ if(isset($_POST['table'])){
     $return['error'] = false;
   }
   if($_POST['table']=="employees"){
-    $res = $db->query("SELECT * FROM employees e, people p, cities ci, ranks r, employeestatuses s WHERE p.personid=e.personid AND p.cityid=ci.cityid AND e.rankid=r.rankid AND e.statusid=s.statusid");
-    while ($r = $res->fetch_assoc()) {
-      $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
-      $return['contents'][] = array($r['firstname'], $r['lastname'], $r['address'], $r['city'] . ", " . $r['state'], $r['phone'], $r["email"], ucwords(strtolower($r['rank'])), ucwords(strtolower($r['status'])), $edit);
-      $return['extra'][] = array($r['employeeid'], $r['personid'], $r['username'], $r['password']);
+    if (is_manager()) {
+      $res = $db->query("SELECT * FROM employees e, people p, cities ci, ranks r, employeestatuses s WHERE p.personid=e.personid AND p.cityid=ci.cityid AND e.rankid=r.rankid AND e.statusid=s.statusid");
+      while ($r = $res->fetch_assoc()) {
+        $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
+        $return['contents'][] = array($r['firstname'], $r['lastname'], $r['address'], $r['city'] . ", " . $r['state'], $r['phone'], $r["email"], ucwords(strtolower($r['rank'])), ucwords(strtolower($r['status'])), $edit);
+        $return['extra'][] = array($r['employeeid'], $r['personid'], $r['username'], $r['password']);
+      }
+      $return['error'] = false;
     }
-    $return['error'] = false;
   }
   echo json_encode($return);
 }
