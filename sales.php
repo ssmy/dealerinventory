@@ -10,43 +10,86 @@ make_head("Sales");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Vehicle Sales</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <table id="table1" class="table table-striped table-bordered table-hover">
       <tr>
-        <th>Sale</th>
+        <th>Vehicle</th>
         <th>Customer</th>
         <th>Employee</th>
-        <th>Vehicle</th>
         <th>Date Sold</th>
         <th>Sale Price</th>
+<? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM vehiclesales p");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td>" . $r["saleid"] . "</td>";
-  echo "<td>" . $r["customerid"] . "</td>";
-  echo "<td>" . $r["employeeid"] . "</td>";
-  echo "<td>" . $r["vehicleid"] . "</td>";
-  echo "<td>" . $r["datesold"] . "</td>";
-  echo "<td>" . $r["saleprice"] . "</td>";
-  echo "</tr>";
-  }
-  ?>
     </table>
-    <? if (is_manager()) { ?>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'vehiclesales'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                for (var r = 0; r < data.contents.length; r++) {
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table1 tr:last').after('<tr>' + $data + '</tr>');
+                }
+                $extradata = data.extra;
+                $('.edit').click(function(){
+                  $editrow=$(this);
+                  editset($(this));
+                  $action = "update";
+                });
+              } else {
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
+            }
+          });
+        }
+        loadData();
+<?if(!is_manager()) {?>
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+<?} else {?>
         $('#triggerAdd').click(function() {
           $('#addModal').modal({show:true});
           $action = "add";
         });
 
-        function reset() {
-          $('#form')[0].reset();
+        var editrow = null;
+
+        function editset($obj){
+          $row = $obj.closest("tr")[0].cells;
+          $('#vehicle option:contains(' + $row[0].innerHTML + ')').prop({selected: true})
+          $('#customer option:contains(' + $row[1].innerHTML + ')').prop({selected: true})
+          $('#employee option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
+          $('#datesold').val($row[3].innerHTML);
+          $('#sale').val($row[4].innerHTML);
+          $('#vehicle').prepend($('<option>', {value: 0}).text('No change'));
+          $('#vehicle')[0].selectedIndex = 0;
+          $('.modal-header h3').text('Update Sale');
+          $('#submit').text("Update Sale");
+          $('#addModal').modal({show:true}); 
         }
 
         $('.reset').click(function() {
-          reset();
+          $('#message').attr("style","display:none;");
+          if ($action=="add"){
+            $('#form')[0].reset();
+          }
+          else
+            editset($editrow);
         });
 
         $('#submit').click(function() {
@@ -68,7 +111,17 @@ while ($r = $res->fetch_assoc()) {
                 $('#message').text("Sale added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#custform')[0].reset();
+                $('#form1')[0].reset();
+                $('#form1').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal').modal('toggle');
+                  $('#table1 tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message').attr('style', 'display: none;');
+                }, 2000);
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -76,6 +129,7 @@ while ($r = $res->fetch_assoc()) {
               }
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
               $('#message').text("Error adding sale");
               $('#message').attr('class', 'alert alert-error');
               $('#message').attr('style', '');
@@ -169,10 +223,10 @@ while ($r = $res->fetch_assoc()) {
                   $('#table2 tr:last').after('<tr>' + $data + '</tr>');
                 }
                 $extradata = data.extra;
-                $('.edit').click(function(){
-                  editset($(this));
+                $('.edit2').click(function(){
+                  editset2($(this));
                   $action = "update";
-                  $editrow=$(this);
+                  $editrow2=$(this);
                 });
               } else {
                 $('#dataerror').text(data.msg);
@@ -198,12 +252,30 @@ while ($r = $res->fetch_assoc()) {
           $action = "add";
         });
 
-        function reset() {
-          $('#form2')[0].reset();
+        var editrow2 = null;
+        $saleid = 0;
+
+        function editset2($obj){
+          $row = $obj.closest("tr")[0].cells;
+          $('#part2 option:contains(' + $row[0].innerHTML + ')').prop({selected: true})
+          $('#customer2 option:contains(' + $row[1].innerHTML + ')').prop({selected: true})
+          $('#employee2 option:contains(' + $row[2].innerHTML + ')').prop({selected: true})
+          $('#datesold2').val($row[3].innerHTML);
+          $('#sale2').val($row[4].innerHTML);
+          $('#quantity2').val($row[5].innerHTML);
+          $('.modal-header h3').text('Update Sale');
+          $('#submit2').text("Update Sale");
+          $('#addModal2').modal({show:true}); 
+          $saleid = $extradata[$row[0].parentNode.rowIndex - 1][0];
         }
 
-        $('.reset').click(function() {
-          reset();
+        $('.reset2').click(function() {
+          $('#message2').attr("style","display:none;");
+          if ($action=="add"){
+            $('#form2')[0].reset();
+          }
+          else
+            editset2($editrow2);
         });
 
         $('#submit2').click(function() {
@@ -219,14 +291,25 @@ while ($r = $res->fetch_assoc()) {
               part: $('#part2').val(),
               date: $('#date2').val(),
               quantity: $('#quantity2').val(),
-              price: $('#sale2').val()
+              price: $('#sale2').val(),
+              sale: $saleid
             },
             success: function(data) {
               if (data.error == false) {
                 $('#message2').text("Sale added successfully");
                 $('#message2').attr('class', 'alert alert-success');
                 $('#message2').attr('style', '');
-                $('#form')[0].reset();
+                $('#form2')[0].reset();
+                $('#form2').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal2').modal('toggle');
+                  $('#table2 tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form2').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message2').attr('style', 'display: none;');
+                }, 2000);
                 } else {
                 $('#message2').text(data.msg);
                 $('#message2').attr('class', 'alert alert-error');
@@ -291,8 +374,8 @@ while ($r = $res->fetch_assoc()) {
         </form>
       </div>
       <div class="modal-footer">
-        <a class="btn reset">Reset</a>
-        <a class="btn reset" data-dismiss="modal">Close</a>
+        <a class="btn reset2">Reset</a>
+        <a class="btn reset2" data-dismiss="modal">Close</a>
         <a id="submit2" class="btn btn-primary">Make sale</a>
       </div>
     </div>
