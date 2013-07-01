@@ -11,9 +11,8 @@ make_head("Parts");
     <div id="dataerror" class="alert alert-error" style="display: none;"></div>
     <table id="table" class="table table-striped table-bordered table-hover">
       <tr>
-        <th>Part #</th>
-        <th>Cost</th>
         <th>Name</th>
+        <th>Cost</th>
         <th>Quantity</th>
 <? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>

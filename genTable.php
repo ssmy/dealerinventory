@@ -8,10 +8,10 @@ if(isset($_POST['table'])){
     while ($r = $res->fetch_assoc()) {
       if(is_manager()) {
         $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
-        $return['contents'][] = array($r['partid'], $r['cost'], $r['name'], $r['quantity'], $edit);
+        $return['contents'][] = array($r['name'], $r['cost'], $r['quantity'], $edit);
       }
       else{
-        $return['contents'][] = array($r['partid'], $r['cost'], $r['name'], $r['quantity']);
+        $return['contents'][] = array($r['name'], $r['cost'], $r['quantity']);
       }
     }
     $return['error'] = false;
@@ -55,7 +55,7 @@ if(isset($_POST['table'])){
     $res = $db->query("SELECT * FROM partsales ps, customers c, employees e, people p, people p2, parts pt WHERE ps.customerid=c.customerid AND ps.employeeid=e.employeeid AND ps.partid=pt.partid AND c.personid=p.personid AND e.personid=p2.personid");
     while ($r = $res->fetch_array()) {
       if(is_manager()) {
-        $edit="<a href=\"#\" class=\"edit\"><i class=\"icon-edit\"></i></a>";
+        $edit="<a href=\"#\" class=\"edit2\"><i class=\"icon-edit\"></i></a>";
         $return['contents'][] = array($r['name'], $r[17].' '.$r[18], $r[24].' '.$r[25], $r['datesold'], money_format("%i",$r['saleprice']), $r['quantity'], $edit);
       }
       else{
