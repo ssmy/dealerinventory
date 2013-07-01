@@ -135,34 +135,61 @@ while ($r = $res->fetch_assoc()) {
     </div>
     <? } ?>
     <h1>Part Sales</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <div id="dataerror" class="alert alert-error" style="display: none;"></div>
+    <table id="table2" class="table table-striped table-bordered table-hover">
       <tr>
-        <th>Sale #</th>
-        <th>Customer #</th>
-        <th>Employee #</th>
-        <th>Part #</th>
+        <th>Part</th>
+        <th>Customer</th>
+        <th>Employee#</th>
         <th>Date Sold</th>
         <th>Sale Price</th>
         <th>Quantity</th>
+<? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM partsales p");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td>" . $r["saleid"] . "</td>";
-  echo "<td>" . $r["customerid"] . "</td>";
-  echo "<td>" . $r["employeeid"] . "</td>";
-  echo "<td>" . $r["partid"] . "</td>";
-  echo "<td>" . $r["datesold"] . "</td>";
-  echo "<td>" . $r["saleprice"] . "</td>";
-  echo "<td>" . $r["quantity"] . "</td>";
-  echo "</tr>";
-  }
-  ?>
     </table>
-    <? if (is_manager()) { ?>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'partsales'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                for (var r = 0; r < data.contents.length; r++) {
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table2 tr:last').after('<tr>' + $data + '</tr>');
+                }
+                $extradata = data.extra;
+                $('.edit').click(function(){
+                  editset($(this));
+                  $action = "update";
+                  $editrow=$(this);
+                });
+              } else {
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              console.log(XMLHttpRequest);
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
+            }
+          });
+        }
+        loadData();
+<?if(!is_manager()) {?>
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+<?} else {?>
         $('#triggerAdd2').click(function() {
           $('#addModal2').modal({show:true});
           $action = "add";
@@ -196,7 +223,7 @@ while ($r = $res->fetch_assoc()) {
                 $('#message2').text("Sale added successfully");
                 $('#message2').attr('class', 'alert alert-success');
                 $('#message2').attr('style', '');
-                $('#custform')[0].reset();
+                $('#form')[0].reset();
                 } else {
                 $('#message2').text(data.msg);
                 $('#message2').attr('class', 'alert alert-error');
