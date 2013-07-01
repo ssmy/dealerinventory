@@ -10,32 +10,58 @@ make_head("Sales");
   <div class="container"/>
     <?php include('navbar.html'); ?>
     <h1>Vehicle Sales</h1>
-    <table class="table table-striped table-bordered table-hover">
+    <table id="table1" class="table table-striped table-bordered table-hover">
       <tr>
-        <th>Sale</th>
+        <th>Vehicle</th>
         <th>Customer</th>
         <th>Employee</th>
-        <th>Vehicle</th>
         <th>Date Sold</th>
         <th>Sale Price</th>
+<? if(is_manager()) { echo "<th>Edit</th>"; } ?>
       </tr>
-<?php
-$res = $db->query("SELECT * FROM vehiclesales p");
-while ($r = $res->fetch_assoc()) {
-  echo "<tr>";
-  echo "<td>" . $r["saleid"] . "</td>";
-  echo "<td>" . $r["customerid"] . "</td>";
-  echo "<td>" . $r["employeeid"] . "</td>";
-  echo "<td>" . $r["vehicleid"] . "</td>";
-  echo "<td>" . $r["datesold"] . "</td>";
-  echo "<td>" . $r["saleprice"] . "</td>";
-  echo "</tr>";
-  }
-  ?>
     </table>
-    <? if (is_manager()) { ?>
     <script>
       $(document).ready(function() {
+        function loadData() {
+          $.ajax({
+            type:     'POST',
+            url:      'genTable.php',
+            dataType: 'json',
+            data:     {
+              table: 'vehiclesales'
+            },
+            success: function(data) {
+              if (data.error == false) {
+                for (var r = 0; r < data.contents.length; r++) {
+                  $data = "";
+                  for (var c = 0; c < data.contents[r].length; c++)
+                    $data += '<td>' + data.contents[r][c] + '</td>';
+                  $('#table1 tr:last').after('<tr>' + $data + '</tr>');
+                }
+                $extradata = data.extra;
+                $('.edit').click(function(){
+                  editset($(this));
+                  $action = "update";
+                  $editrow=$(this);
+                });
+              } else {
+                $('#dataerror').text(data.msg);
+                $('#dataerror').attr('style', '');
+              }
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+              $('#dataerror').text("Error loading data. Please refresh.");
+              $('#dataerror').attr('style', '');
+            }
+          });
+        }
+        loadData();
+<?if(!is_manager()) {?>
+      });
+    </script>
+    <script>
+      $(document).ready(function() {
+<?} else {?>
         $('#triggerAdd').click(function() {
           $('#addModal').modal({show:true});
           $action = "add";
