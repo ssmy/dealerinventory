@@ -26,6 +26,12 @@ if (isset($_POST['submit']) && ($_POST['action']=="add" || $_POST['action']=="up
       echo json_encode($return);
       die();
     }
+    if($_POST['cost']<(.01)){
+      $return['error'] = true;
+      $return['msg'] = "Cost must be $0.01 or greater";
+      echo json_encode($return);
+      die();
+    }
     if($_post['action']=="add"){
       $res = $db->query('insert into parts (cost, quantity, name) values ('.$_post['cost'].','.$_post['quantity'].',"'.$_post['name'].'");');
     } else {
