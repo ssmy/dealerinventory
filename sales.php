@@ -111,7 +111,17 @@ make_head("Sales");
                 $('#message').text("Sale added successfully");
                 $('#message').attr('class', 'alert alert-success');
                 $('#message').attr('style', '');
-                $('#custform')[0].reset();
+                $('#form1')[0].reset();
+                $('#form1').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal').modal('toggle');
+                  $('#table1 tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message').attr('style', 'display: none;');
+                }, 2000);
                 } else {
                 $('#message').text(data.msg);
                 $('#message').attr('class', 'alert alert-error');
@@ -289,7 +299,17 @@ while ($r = $res->fetch_assoc()) {
                 $('#message2').text("Sale added successfully");
                 $('#message2').attr('class', 'alert alert-success');
                 $('#message2').attr('style', '');
-                $('#form')[0].reset();
+                $('#form2')[0].reset();
+                $('#form2').attr('style', 'display:none;');
+                $('div.modal-footer').attr('style', 'display:none;');
+                setTimeout(function() {
+                  $('#addModal2').modal('toggle');
+                  $('#table2 tr').not(function(){if ($(this).has('th').length){return true}}).remove();
+                  loadData();
+                  $('#form2').attr('style', '');
+                  $('div.modal-footer').attr('style', '');
+                  $('#message2').attr('style', 'display: none;');
+                }, 2000);
                 } else {
                 $('#message2').text(data.msg);
                 $('#message2').attr('class', 'alert alert-error');
