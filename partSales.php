@@ -2,7 +2,7 @@
 include('util.php');
 begin();
 $db = connect_db();
-make_head("Sales");
+make_head("Part Sales");
 ?>
   <script src="datepicker/js/bootstrap-datepicker.js"></script>
   <link href="datepicker/css/datepicker.css" rel="stylesheet" media="screen" />
